@@ -3,7 +3,6 @@
 
 <head>
     <meta charaset="UTF-8">
-    <title>Word_note</title>
     <!--単語帳を作ろう！
         ログイン機能があったらいいよね
         追加・削除・更新・読み込み機能(MySQL)機能を備えているのが必須
@@ -44,12 +43,16 @@ if (!empty($_POST['openbook'])) {
 
     if (!empty($_POST['word_id'])) {
 
+        //echo "koko";
+
         $nowweight = $_POST['weight'];
         $addweight = $_POST['addweight'];
         $total_weight = $nowweight + $addweight;
         $update_book = mysqli_query($link, "update words set last_answer_date ='" . $now . "' where word_id='" . $_POST['word_id'] . "'");
         $update_book = mysqli_query($link, "update words set word_weight='" . $total_weight . "' where word_id='" . $_POST['word_id'] . "'");
     }
+$there_word=0;
+  
 
     mysqli_set_charset($link, "");
     $open_book = mysqli_query($link, "SELECT * FROM words where book_id='" . $_POST['openbook'] . "' order by word_weight limit 1");
@@ -60,6 +63,7 @@ if (!empty($_POST['openbook'])) {
         $weight = $row_book["word_weight"];
         //$book_name=$row_book["book_name"];
         //echo "<h1>【".$book_name."】</h1>";
+$there_word=1;
         echo "<h2 id='question' onclick='clickBtn2()'>" . $row_book["question"] . "</h2>";
         echo "<br>";
         echo "<h2 id='answer'>" . $row_book["answer"] . "</h2>";
@@ -79,10 +83,21 @@ if (!empty($_POST['openbook'])) {
 
 
 
-    /*if($there_word==0){
+ if($there_word==0){
+        echo "
+    <div style='float:left;'>
+        <form method=post action='https://word-note.main.jp/index.php'>
+            <button  class='clear_button'>
+                <img src='./img/iconmonstr-undo-1-32.png'>
+            </button>
+        </form>
+    </div>";
         echo "単語を登録しましょう！<br><br>";
-        echo "<form method=post action='https://localhost/openbook.php'><input type=hidden name='openbook' value=".$book_id."><p>問題を登録する</p><input type=text name='question'><p>回答を登録する</p><input type=text name='answer'><br><button>登録！</button></form>";
-    }else{
+        echo "<form method=post action='https://word-note.main.jp/openbook.php'><input type=hidden name='openbook' value=".$book_id."><p>問題を登録する</p><input type=text name='question'><p>回答を登録する</p><input type=text name='answer'><br><button>登録！</button></form>";
+ 
+}
+
+/*   }else{
         echo "単語帳が".$count_word."件あります！";
         echo "<br><button>スタート</button>";
         echo "<form method=post action='https://localhost/openbook.php'><input type=hidden name='openbook' value=".$book_id."><p>問題を登録する</p><input type=text name='question'><p>回答を登録する</p><input type=text name='answer'><br><button>登録！</button></form>";
@@ -102,6 +117,9 @@ if (!empty($_POST['openbook'])) {
     <p>◆ログアウトする</p>
 
     ";}*/
+
+    
+
 } elseif (!empty($_POST['settings'])) {
     echo "    <header class='header'>
         
@@ -139,12 +157,12 @@ if (!empty($_POST['openbook'])) {
     $setting_book = mysqli_query($link, "SELECT * FROM words where book_id='" . $_POST['book_id'] . "' order by word_weight limit 1");
 
 
-
+    $zero_book = 0;
     while ($set_book = mysqli_fetch_assoc($setting_book)) {
         $word_id = $set_book['word_id'];
         //echo $word_id;
         //echo "--------------------<br>";
-
+        $zero_book = 1;
 
 
 
@@ -198,7 +216,9 @@ if (!empty($_POST['openbook'])) {
         echo "</select></div>
         <input type='hidden' name='settings' value='rewrite'>
         <input type=hidden name='word_id' value='" . $word_id . "'>
-        <input type=hidden name='book_id' value=" . $set_bookname['book_id'] . ">";
+        <input type=hidden name='book_id' value=" . $_POST['book_id'] . ">";
+
+        //echo "ここいじってる";
         echo "
         <br>
         <div style='text-align:center;'>
@@ -211,7 +231,7 @@ if (!empty($_POST['openbook'])) {
 
         <form method=post action='./settings.php'>
         <input type=hidden name='word_id' value='" . $word_id . "'>
-        <input type=hidden name='book_id' value='" . $book_id_result . "'>
+        <input type=hidden name='book_id' value='" . $_POST['book_id'] . "'>
         <input type=hidden name='settings' value='delete'>
         <input type=hidden name='question' value=" . $set_book['question'] . ">
         <div style='text-align:center;'>
@@ -228,6 +248,11 @@ if (!empty($_POST['openbook'])) {
         //ドロップダウンボックス作ってみるかー
 
     }
+
+    if ($zero_book == 0) {
+        echo "戻る";
+    }
+    //echo "ここ";
 } else {
     echo "<header class='header'>
             <div class='main_title'>

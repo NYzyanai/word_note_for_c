@@ -110,15 +110,19 @@
         //設定ミスった時のためにLIMIT
 
         echo "
-    <p>
+    
+    <form method=post action='https://word-note.main.jp/book.php'>
+        <p>
         【" . $_POST['question'] . "】を削除しました！
     </p>
-    <form method=post action='https://word-note.main.jp/book.php'>
         <button  id='return'  class='clear_button'>
             <img src='./img/iconmonstr-undo-1-32.png'>
             <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
+            <input type=hidden name='book_id' value='" . $_POST['book_id'] . "'>
         </button>
     </form>";
+
+    // echo  $_POST['book_id'];
     } elseif ($_POST['settings'] == 'total_settings') {
 
         echo "

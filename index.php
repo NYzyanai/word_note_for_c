@@ -3,27 +3,23 @@
 
 <head>
     <meta charaset="UTF-8">
-    <title>WordNote</title>
+    <title>Word_note</title>
     <!--単語帳を作ろう！
         ログイン機能があったらいいよね
         追加・削除・更新・読み込み機能(MySQL)機能を備えているのが必須
         ブラウザで動作確認ができること
         コードが閲覧できること-->
+
     <link rel="stylesheet" href="main.css" />
 
 </head>
+
 
 <body>
     <header class="header">
         <div class="main_title">
             <a href='https://word-note.main.jp/'>
-                <p>
-                    自分の、
-                    <br>
-                    自分による、
-                    <br>
-                    自分のための単語帳
-                </p>
+                <p>自分の、<br>自分による、<br>自分のための単語帳</p>
             </a>
         </div>
 
@@ -33,7 +29,7 @@
     </header>
 
     <?php
-    session_start();
+
     ?>
 
     <?php
@@ -128,7 +124,7 @@
                 echo "<br><br>";
                     while ($row = mysqli_fetch_assoc($result)) {
                         //echo "id=" . $row["id"];
-                        echo "ようこそ". $row["name"]."さん！";
+                        //echo "ようこそ". $row["name"]."さん！";
                         //echo ",password=" . $row["password"] . "<br />";
                         $user_id=$row["id"]; 
                         $user_id="user_id=".$user_id;
@@ -161,7 +157,7 @@
             $count_word_book++;
             //echo $count_word_book;
             echo "<form method=post action='https://word-note.main.jp/openbook.php'>
-                            <input type=hidden name='openbook' value=" . $count_word_book . ">
+                            <input type=hidden name='openbook' value=" . $book_id . ">
                             <button class='bookindex'>" . $row_book["book_name"] . "</button>
                         </form>";
             //該当したときの処理
