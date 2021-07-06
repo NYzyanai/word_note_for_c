@@ -3,6 +3,7 @@
 
 <head>
     <meta charaset="UTF-8">
+    <title>login</title>
     <!--単語帳を作ろう！
         ログイン機能があったらいいよね
         追加・削除・更新・読み込み機能(MySQL)機能を備えているのが必須
@@ -274,7 +275,16 @@ $there_word=1;
 
 <script>
     //初期表示は非表示
-    document.getElementById("answer").style.visibility = "hidden";
+    
+    console.log(document.getElementById("answer")) 
+    
+    
+    if(document.getElementById("answer")==null){
+        console.log("nullだよー");
+    }else{
+        console.log("nullじゃないよー");
+	document.getElementById("answer").style.visibility= "hidden";
+    }
 
     function clickBtn2() {
         const answer = document.getElementById("answer");
