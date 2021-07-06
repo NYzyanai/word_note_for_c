@@ -275,6 +275,7 @@ $there_word=1;
 
 <script>
     //初期表示は非表示
+    //consoe.log(document.getElementById("answer").style.visibility) = "hidden"
     
     console.log(document.getElementById("answer")) 
     
