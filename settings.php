@@ -61,7 +61,7 @@
         echo "
     <form method=post action='https://word-note.main.jp/book.php'>
         <button  id='return'  class='clear_button'>
-            <input type=hidden name='openbook' value='" . $result_bookid . "'>
+            <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
             <img src='./img/iconmonstr-undo-1-32.png'>
         </button>
     </form>";
@@ -108,19 +108,39 @@
         include('./login_safe.php');
         $delete = mysqli_query($link, "delete from words where word_id='" . $_POST['word_id'] . "' LIMIT 1");
         //設定ミスった時のためにLIMIT
+        $count = mysqli_query($link, "select word_id from words where book_id='" . $_POST['book_id'] . "'");
 
-        echo "
-    
-    <form method=post action='https://word-note.main.jp/book.php'>
-        <p>
+        $count_words_all = 0;
+        while ($count_words = mysqli_fetch_assoc($count)) {
+            //echo "残り単語数".$count_words['word_id'];
+            $count_words_all++;
+        }
+        //echo "全部で".$count_words_all;
+
+        echo "<p>
         【" . $_POST['question'] . "】を削除しました！
-    </p>
-        <button  id='return'  class='clear_button'>
-            <img src='./img/iconmonstr-undo-1-32.png'>
-            <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
-            <input type=hidden name='book_id' value='" . $_POST['book_id'] . "'>
-        </button>
-    </form>";
+    </p>";
+
+        if ($count_words_all == 0) {
+            echo "
+        <form method=post action='https://word-note.main.jp/index.php'>
+            <button  id='return'  class='clear_button'>
+                <img src='./img/iconmonstr-undo-1-32.png'>
+                <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
+                <input type=hidden name='book_id' value='" . $_POST['book_id'] . "'>
+            </button>
+        </form>";
+        } else {
+            echo "
+        <form method=post action='https://word-note.main.jp/book.php'>
+            <button  id='return'  class='clear_button'>
+                <img src='./img/iconmonstr-undo-1-32.png'>
+                <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
+                <input type=hidden name='book_id' value='" . $_POST['book_id'] . "'>
+            </button>
+        </form>";
+        }
+
 
         // echo  $_POST['book_id'];
     } elseif ($_POST['settings'] == 'total_settings') {
@@ -327,10 +347,10 @@
         include('./login_safe.php');
 
         //ここで削除前の本のタイトル取得しておく
-$before_book=mysqli_query($link,"select book_name from book_name where book_id='" . $_POST['book2'] . "'");
-while($title=mysqli_fetch_assoc($before_book)){
-    $before_book_name=$title['book_name'];
-}
+        $before_book = mysqli_query($link, "select book_name from book_name where book_id='" . $_POST['book2'] . "'");
+        while ($title = mysqli_fetch_assoc($before_book)) {
+            $before_book_name = $title['book_name'];
+        }
 
         $update_book = mysqli_query($link, "update book_name 
     set book_name='" . $_POST['newtitle'] . "'
@@ -340,7 +360,7 @@ while($title=mysqli_fetch_assoc($before_book)){
             echo "updateできなかった";
         } else {
 
-            echo "【".$before_book_name."】を<br>【".$_POST['newtitle']."】というタイトルに<br>変更しました！";
+            echo "【" . $before_book_name . "】を<br>【" . $_POST['newtitle'] . "】というタイトルに<br>変更しました！";
             echo "<form method=post action='https://word-note.main.jp/index.php'>
                 <button  id='return' class='clear_button'>
                 <img src='./img/iconmonstr-undo-1-32.png'>
