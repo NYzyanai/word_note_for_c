@@ -17,14 +17,27 @@
 <?php
 echo "<header class='header'>
             <div class='main_title'>
-            <a href='http://word-note.main.jp/index.php'><p>自分の、<br>自分による、<br>自分のための単語帳</p></a>
+            <a href='https://word-note.main.jp/index.php'><p>自分の、<br>自分による、<br>自分のための単語帳</p></a>
             </div>";
-echo "<div class='sub_title'>
-                <form method=post action='http://word-note.main.jp/book.php'><input type='hidden' name='settings' value='settings'><input type=hidden name='book_id' value =" . $_POST['openbook'] . "><button class='settings_button'><img src='/img/iconmonstr-gear-6-32.png'></button></form>
-            </div></header>";
+echo "</div><div class='sub_title'>
+ <p>the word note of me,<br>by me,<br>for me</p>
+ </div>";
+//<form method=post action='http://word-note.main.jp/book.php'><input type='hidden' name='settings' value='settings'><input type=hidden name='book_id' value =" . $_POST['openbook'] . "><button class='settings_button'><img src='/img/iconmonstr-gear-6-32.png'></button></form>
+echo "</header>";
 
-echo "<body>
-        <div style='text-align:center;'>
+/*error出てる
+            Mixed Content: The page at 'https://word-note.main.jp/human.php' was loaded over a secure connection, but contains a form that targets an insecure endpoint 'http://word-note.main.jp/book.php'. This endpoint should be made available over a secure connection.
+                
+            */
+
+
+
+echo "<body>";
+
+
+
+
+echo    "<div style='text-align:center;'>
         <h2>
             作った人
         </h2>
@@ -68,7 +81,7 @@ echo "<body>
 <li>本サービスにかかるコンピュータシステムの保守点検または更新を行う場合</li>
 <li>地震，落雷，火災，停電または天災などの不可抗力により，本サービスの提供が困難となった場合</li>
 <li>コンピュータまたは通信回線等が事故により停止した場合</li>
-<li>その他，当社が本サービスの提供が金銭的事情などから困難と判断した場合</li>
+<li>その他，製作者が本サービスの提供が金銭的事情などから困難と判断した場合</li>
 <li>製作者は，本サービスの提供の停止または中断により，ユーザーまたは第三者が被ったいかなる不利益または損害についても，一切の責任を負わないものとします。</li>
 </ul>
 
@@ -76,10 +89,15 @@ echo "<body>
 製作者は，ユーザーが以下のいずれかに該当する場合には，事前の通知なく，ユーザーに対して，本サービスの全部もしくは一部の利用を制限し，またはユーザーとしての登録を抹消することができるものとします。
 <ul>
 <li>本規約のいずれかの条項に違反した場合</li>
-<li>その他，当社が本サービスの利用を適当でないと判断した場合</li>
+<li>その他，製作者が本サービスの利用を適当でないと判断した場合</li>
 </ul>
-製作者は，本条に基づき当社が行った行為によりユーザーに生じた損害について，一切の責任を負いません。
+製作者は，本条に基づき製作者が行った行為によりユーザーに生じた損害について，一切の責任を負いません。";
 
-        
-        <body>";
+echo "<br><br><form method=post action='https://word-note.main.jp/index.php'>
+    <button class='clear_button'>
+    <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
+    <img src='./img/iconmonstr-undo-1-32.png'>
+    もどる
+    </button>
+    </form><body>";
 ?>

@@ -122,7 +122,7 @@
         </button>
     </form>";
 
-    // echo  $_POST['book_id'];
+        // echo  $_POST['book_id'];
     } elseif ($_POST['settings'] == 'total_settings') {
 
         echo "
@@ -172,7 +172,7 @@
         <form method=post action='https://word-note.main.jp/human.php'>
             <button class='clear_button settings_card' style='margin-top:10px; margin-bottom:10px;'>
                 <h1>
-                    作った人
+                    作った人/利用規約
                 </h1>
             </button>
         </form>
@@ -180,12 +180,17 @@
     } elseif ($_POST['settings'] == 'book_change') {
 
 
-        echo "気合で単語帳の名前とか帰れるページ作る";
+        //echo "気合で単語帳の名前とか帰れるページ作る";
 
         include('./login_safe.php');
         $settings_bookname = mysqli_query($link, "SELECT * FROM book_name");
 
-        echo "
+        echo "<form method=post action='https://word-note.main.jp/index.php'>
+            <button  class='clear_button'>
+            <img src='./img/iconmonstr-undo-1-32.png'>
+            もどる
+            </button>
+            </form>
     <form method=post>
         <h2  class='settings_card' style='text-align:center; background-color:white;'>
             <select name='book2'>";
@@ -199,8 +204,8 @@
             </select>
             の単語帳を
             <br>
-            <input type=hidden name='settings' value='book_update'>
-            <input name='newtitle'>
+            <input type=hidden name='settings' value='book_update' >
+            <input name='newtitle' required>
             </input>
             というタイトルに…
         </h2>
@@ -216,7 +221,14 @@
     </form>";
     } elseif ($_POST['settings'] == 'book_delete') {
 
-        echo "単語帳消すページ作る";
+        //echo "単語帳消すページ作る";
+        echo "<form method=post action='https://word-note.main.jp/index.php'>
+            <button class='clear_button'>
+            <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
+            <img src='./img/iconmonstr-undo-1-32.png'>
+            もどる
+            </button>
+            </form><body>";
         include('./login_safe.php');
         echo "
     <form method=post>
@@ -300,7 +312,7 @@
         if (!$delete_book) {
             echo "消せなかった";
         } else {
-            echo "消しました！！";
+            echo "単語帳を消しました！！";
             echo "<form method=post action='https://word-note.main.jp/index.php'>
                 <button  id='return' class='clear_button'>
                 <img src='./img/iconmonstr-undo-1-32.png'>
@@ -314,6 +326,12 @@
 
         include('./login_safe.php');
 
+        //ここで削除前の本のタイトル取得しておく
+$before_book=mysqli_query($link,"select book_name from book_name where book_id='" . $_POST['book2'] . "'");
+while($title=mysqli_fetch_assoc($before_book)){
+    $before_book_name=$title['book_name'];
+}
+
         $update_book = mysqli_query($link, "update book_name 
     set book_name='" . $_POST['newtitle'] . "'
     where book_id='" . $_POST['book2'] . "'");
@@ -321,13 +339,14 @@
         if (!$update_book) {
             echo "updateできなかった";
         } else {
-            echo "updateできました！";
+
+            echo "【".$before_book_name."】を<br>【".$_POST['newtitle']."】というタイトルに<br>変更しました！";
             echo "<form method=post action='https://word-note.main.jp/index.php'>
-            <button  id='return' class='clear_button'>
-            <img src='./img/iconmonstr-undo-1-32.png'>
-            もどる
-            </button>
-            </form>";
+                <button  id='return' class='clear_button'>
+                <img src='./img/iconmonstr-undo-1-32.png'>
+                もどる
+                </button>
+                </form>";
         }
     } else {
 
@@ -352,9 +371,13 @@
     }
     ?>
     <script>
-        setTimeout(function() {
-            document.getElementById('return').click();
-        }, 2 * 1000);
+        if (document.getElementById('return') != null) {
+
+            //getelementedbyidできなかたときの返り血はnull
+            setTimeout(function() {
+                document.getElementById('return').click();
+            }, 2 * 1000);
+        }
     </script>
 
     </div>

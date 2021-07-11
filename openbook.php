@@ -29,7 +29,7 @@
     //echo "<div class='sub_title'><form method=post action='https://localhost/book.php'><input type='hidden' name='settings' value='settings'><input type=hidden name='book_id' value =".$_POST['openbook']."><button class='settings_button'><img src='/img/iconmonstr-gear-6-32.png'></button></form></div>";
     echo "</header>";
 
-    session_start();
+    //session_start();
     //echo '入力値の確認をお願いします';
     //echo '<br><br>';
     //echo "【ポスト名前】".$_POST['nm'];
@@ -40,6 +40,15 @@
 
     //echo "【セッション】";
     //echo $_SESSION['nm'];
+
+
+    echo "<form method=post action='https://word-note.main.jp/index.php'>
+        <button class='clear_button'>
+        <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
+        <img src='./img/iconmonstr-undo-1-32.png'>
+        もどる
+        </button>
+        </form><body>";
 
 
     include('https://word-note.main.jp/login_safe.php');
@@ -102,13 +111,13 @@
 
         if ($there_word == 0) {
             echo "<div style='text-align:center;'>単語を登録しましょう！<br><br>";
-            echo "<form method=post action='https://word-note.main.jp/openbook.php'><input type=hidden name='openbook' value=" . $book_id . "><p>問題を登録する</p><input type=text name='question'><p>回答を登録する</p><input type=text name='answer'><br><button>登録！</button></form>";
+            echo "<form method=post action='https://word-note.main.jp/openbook.php'><input type=hidden name='openbook' value=" . $book_id . "><p>問題を登録する</p><input type=text name='question' required><p>回答を登録する</p><input type=text name='answer' required><br><button>登録！</button></form>";
         } else {
             echo "単語帳が【" . $count_word . "件】あります！";
             echo "<br><div><form method=post action='https://word-note.main.jp/book.php'><input type=hidden name='openbook' value=" . $book_id . "><button class='clear_button createbookbutton' style='background-color:#e3f6f5;'>スタート</button></form></div>";
             //echo "<form method=post action='https://localhost/openbook.php'><input type=hidden name='openbook' value=".$book_id."><p>問題を登録する</p><input type=text name='question'><p>回答を登録する</p><input type=text name='answer'><br><button>登録！</button></form>";
             echo "<br><br><br>";
-            echo "<form method=post action='https://word-note.main.jp/openbook.php'><input type=hidden name='openbook' value=" . $book_id . "><p>問題を登録する</p><input type=text name='question'><p>回答を登録する</p><input type=text name='answer'><br><button>登録</button></form></div>";
+            echo "<form method=post action='https://word-note.main.jp/openbook.php'><input type=hidden name='openbook' value=" . $book_id . "><p>問題を登録する</p><input type=text name='question' required><p>回答を登録する</p><input type=text name='answer' required><br><button>登録</button></form></div>";
         }
     } else {
         echo "<br>";
