@@ -11,7 +11,7 @@
         コードが閲覧できること-->
 
     <link rel="stylesheet" href="main.css" />
-
+    <link rel="icon" href="./favicon.ico" id="favicon">
 </head>
 
 
