@@ -327,12 +327,19 @@
     } elseif (!empty($_POST['book_name_value']) && 'sayonara-nanimo-kamo' == $_POST['settings']) {
         include('./login_safe.php');
 
+        //単語帳が存在していた場合には、bookidを999に退避させる
+        $delete_book_words = mysqli_query($link, 
+        "update words
+        set book_id=999
+        where book_id='" . $_POST['book_name_value'] . "'");
+
+
         $delete_book = mysqli_query($link, "delete from book_name where book_id='" . $_POST['book_name_value'] . "' limit 1");
 
         if (!$delete_book) {
             echo "消せなかった";
         } else {
-            echo "単語帳を消しました！！";
+            echo "単語帳を削除しました！！";
             echo "<form method=post action='https://word-note.main.jp/index.php'>
                 <button  id='return' class='clear_button'>
                 <img src='./img/iconmonstr-undo-1-32.png'>
