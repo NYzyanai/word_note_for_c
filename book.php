@@ -59,12 +59,24 @@ if (!empty($_POST['openbook'])) {
         $total_weight = $nowweight + $addweight;
         $update_book = mysqli_query($link, "update words set last_answer_date ='" . $now . "' where word_id='" . $_POST['word_id'] . "'");
         $update_book = mysqli_query($link, "update words set word_weight='" . $total_weight . "' where word_id='" . $_POST['word_id'] . "'");
+
+        //最後に回答した日
     }
 $there_word=0;
   
 
+    //もし、○なら10日間出題されない。○が3回連続になったらALLモードでしか出ない。
+    //もし△なら2日間でない。ただし△が2回連続になったら翌日出る。
+    //×翌日出る
+
+    //つまり、2回前の解答内容を保持しておく必要がある。
+
     mysqli_set_charset($link, "");
-    $open_book = mysqli_query($link, "SELECT * FROM words where book_id='" . $_POST['openbook'] . "' order by word_weight limit 1");
+    $open_book = mysqli_query($link, 
+    "SELECT * FROM words
+     where book_id='" . $_POST['openbook'] . "'
+     order by word_weight limit 1");
+
 
     while ($row_book = mysqli_fetch_assoc($open_book)) {
         $book_id = $row_book["book_id"];
