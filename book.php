@@ -47,15 +47,14 @@
             //もし、○なら10日間出題されない。○が3回連続になったらALLモードでしか出ない。
             //もし△なら2日間でない。ただし△が2回連続になったら翌日出る。
             //×翌日出る
-
             //つまり、2回前の解答内容を保持しておく必要がある。
 
             mysqli_set_charset($link, "");
             $open_book = mysqli_query(
                 $link,
                 "SELECT * FROM words
-        where book_id='" . $_POST['openbook'] . "'
-        order by word_weight limit 1"
+                where book_id='" . $_POST['openbook'] . "'
+                order by word_weight limit 1"
             );
 
 
@@ -121,23 +120,31 @@
                 </a>
             </div>
 
+            
 
-        <?php
+            
+            <?php if ($there_word==0) : ?>
 
-            if ($there_word == 0) {
-                echo "
         <div style='float:left;'>
             <form method=post action='https://word-note.main.jp/index.php'>
                 <button  class='clear_button'>
                     <img src='./img/iconmonstr-undo-1-32.png'>
                 </button>
             </form>
-        </div>";
-                echo "単語を登録しましょう！<br><br>";
-                echo "<form method=post action='https://word-note.main.jp/openbook.php'><input type=hidden name='openbook' value=" . $book_id . "><p>問題を登録する</p><input type=text name='question'><p>回答を登録する</p><input type=text name='answer'><br><button>登録！</button></form>";
-            }
-
-        } elseif (!empty($_POST['settings'])) {
+        </div>単語を登録しましょう！<br><br>
+        <form method=post action='https://word-note.main.jp/openbook.php'>
+            <input type=hidden name='openbook' value=" . $book_id . ">
+            <p>問題を登録する</p>
+            <input type=text name='question'>
+            <p>回答を登録する</p>
+            <input type=text name='answer'>
+            <br>
+            <button>登録！</button>
+        </form>
+        <?php else : ?>
+        <?php endif; ?>
+            <?php
+        if (!empty($_POST['settings'])) {
             echo "    <header class='header'>
             
             <form action='https://word-note.main.jp/index.php' method=post><div class='main_title'>
@@ -152,11 +159,7 @@
         </header>";
 
 
-            //echo $_POST['book_id'];
-
-
-            //echo "<form method=post action='https://localhost/book.php'><input type='hidden' name='settings' value='settings'><input type=hidden name='openbook' value='".$_POST['book_id']."'><button>◆単語帳を続ける(もどる)</button></form>";   
-            echo "
+ echo "
                             <div>
                                 <div>
                                 <form method=post action='https://word-note.main.jp/book.php'>
@@ -168,8 +171,7 @@
                                 <h1 style='margin:0; float:left;' >単語帳の設定</h1>
                                 <div class='clear'></div>
                             </div>";
-            //echo "<form action='https://localhost/index.php'><button>◆ログアウトする</button></form>";
-            include('./login_safe.php');
+                        include('./login_safe.php');
 
             $setting_book = mysqli_query($link, "SELECT * FROM words where book_id='" . $_POST['book_id'] . "' order by word_weight limit 1");
 
@@ -182,32 +184,7 @@
                 $zero_book = 1;
 
 
-
-                //echo "<input type='text' value=".$set_book['question']." >";
-                /*echo "【質問】";
-            echo "<br>";
-            echo "<textarea type='text' rows='4' cols='40'>".$set_book['question']."</textarea>";
-            echo "<br>";
-            echo "【解答】";
-            echo "<br>";
-            echo "<textarea type='text' rows='4' cols='40'>".$set_book['answer']."</textarea>";
-            echo "<br>";
-            echo "【所属単語帳】<br>";
-            echo "<select class="."wowwow"." name="."単語帳".">";
-            $settings_bookname = mysqli_query ($link,"SELECT * FROM book_name");
-            while ($set_bookname = mysqli_fetch_assoc($settings_bookname)) {
-                $bookname=$set_bookname['book_name'];
-                $book_id_result=$set_bookname['book_id'];
-                if($book_id_result==$_POST['book_id']){
-                echo "<option selected>".$bookname."</option>";
-                }else{
-                    echo "<option>".$bookname."</option>";
-                }
             }
-            echo "
-            </select><br><br>";*/
-                //echo "<button>所属単語帳番号".$set_book['book_id']."</button>";
-                // echo "<button>この単語の設定を変える!</button><br>";
                 echo "<form method=post  action='https://word-note.main.jp/settings.php'>
             
             <div class='settings_card'>
@@ -290,8 +267,6 @@
     </html>
 
     <script>
-        //初期表示は非表示
-        //consoe.log(document.getElementById("answer").style.visibility) = "hidden"
 
         console.log(document.getElementById("answer"))
 
@@ -334,11 +309,5 @@
                 batu.className = "hidden_button";
             }
 
-            /*if(page.className==""){
-                page.className='happy';
-            }*/
-
-
-            //document.form1.submit();
         }
     </script>
