@@ -264,9 +264,19 @@
                 <a href="https://word-note.main.jp/index.php">
                 </a>
             </div>
-        <?php endif; ?>
-        </div>
-    </body>
+
+            <form method=post action='https://word-note.main.jp/index.php'>
+                <button class='clear_button' id='return'>
+                    <img src='./img/iconmonstr-undo-1-32.png'>
+                    もどる
+                </button>
+            </form>
+
+            <body>
+
+            <?php endif; ?>
+            </div>
+            </body>
 
     </html>
 
@@ -277,6 +287,14 @@
         } else {
             console.log("nullじゃないよー");
             document.getElementById("answer").style.visibility = "hidden";
+        }
+
+        if (document.getElementById('return') != null) {
+
+            //getelementedbyidできなかたときの返り血はnull
+            setTimeout(function() {
+                document.getElementById('return').click();
+            }, 2 * 1000);
         }
 
         function clickBtn2() {
