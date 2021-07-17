@@ -136,8 +136,10 @@
                     <div class='main_title'>
                         <a href='https://word-note.main.jp/index.php'>
                             <p>自分の、
-                                <br>自分による、
-                                <br>自分のための単語帳
+                                <br>
+                                自分による、
+                                <br>
+                                自分のための単語帳
                             </p>
                         </a>
                     </div>
