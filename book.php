@@ -37,8 +37,10 @@
             </header>
             <?php
             include('./login_safe.php');
+
             $now = date("Y/m/d H:i:s");
             if (!empty($_POST['word_id'])) {
+                updatebook();
                 $nowweight = $_POST['weight'];
                 $addweight = $_POST['addweight'];
                 $total_weight = $nowweight + $addweight;
