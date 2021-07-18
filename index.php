@@ -39,10 +39,15 @@
     <?php
     include('./login_safe.php');
     include('./function.php');
+
+
+
+
+
     if (!mysqli_connect_errno()) {
 
+
         if (!empty($_POST['book_name'])) {
-            //もしもbook_nameがきたら,Insert文をよぶ
             $book_name = $_POST['book_name'];
             $book_memo = $_POST['book_memo'];
             $create_book_result = mysqli_query(
@@ -58,7 +63,7 @@
         $count_word_book = 0;
         echo $echo;
         if (!empty($result_book)) {
-            echo "呼べてるよ";
+            echo "20210718 追加改修中　もし変な点があれば下部報告フォームをご利用ください";
         } else {
             echo "呼べてないよ";
         }
@@ -71,14 +76,15 @@
                             <button class='bookindex'>" . $row_book["book_name"] . "</button>
                         </form>";
         }
-    }else{
-        echo "接続できませんでした";
     }
     ?>
     <form action='./create_book.php'>
         <button class='createbookbutton'>
             あたらしい単語帳を作る</button>
     </form>
+<div style="text-align:center;">
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf6u2CD9OHCPeYrSV7NDmlLVEzj9WjdDp_FVRGxsy4Yz3JSRg/viewform?embedded=true" width="640" height="372" frameborder="0" marginheight="0" marginwidth="0" >読み込んでいます…</iframe>
+</div>
 </body>
 
 </html>
