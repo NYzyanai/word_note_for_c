@@ -52,11 +52,9 @@
     include('./login_safe.php');
     $book_name = $_POST['book_name'];
     $book_memo = $_POST['book_memo'];
-
     mysqli_set_charset($link, "utf8");
 
     $totalcount = mysqli_query($link, "select *  from book_name");
-
     $totalcount_num = mysqli_num_rows($totalcount);
     //echo $totalcount_num."YEAH";
     if ($totalcount_num + 1 < 20) {
@@ -78,18 +76,15 @@
     }
 
     //ここでINSERTした単語帳の番号を取得する
-
-    //echo "<br><br><div class='settings_card'><a href="."'https://word-note.main.jp/index.php'".">さっそく単語を登録する</a></div>";
-    echo "<form method=post action='https://word-note.main.jp/index.php'>
-        <button class='clear_button'>
-        <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
-        <img src='./img/iconmonstr-undo-1-32.png'>
-        もどる
-        </button>
-        </form>";
-
-
     ?>
+
+    <form method=post action='https://word-note.main.jp/index.php'>
+        <button class='clear_button'>
+            <!--input type=hidden name='openbook' value='" . $_POST['book_id'] . "'-->
+            <img src='./img/iconmonstr-undo-1-32.png'>
+            もどる
+        </button>
+    </form>
 
 </body>
 

@@ -1,0 +1,196 @@
+body{
+    background-color:#f8f5f2;
+    margin: 0%;
+}
+
+
+.header{
+    display: flex;
+    background-color:#f8f5f2;
+    width:auto;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* .がclass,#がid */
+
+.main_title{
+    color:#232323;
+    float:left;
+    margin:0px,0px,0px,0px;
+}
+
+#answer{
+    text-align: center;
+    color:#272343;
+    background-color:#bae8e8;
+    margin-left:15%;
+    margin-right: 15%;
+    padding-top:30px;
+    padding-bottom: 30px;
+    border-radius:10px ;
+    /*border-color: #272343;
+    border:solid;*/
+}
+
+#question{
+    text-align: center;
+    color:#272343;
+    background-color:#e3f6f5;
+    margin-left:15%;
+    margin-right: 15%;
+    padding-top:30px;
+    padding-bottom: 30px;
+    border-radius:10px ;
+    /*border-color:#272343;
+    border:solid;*/
+}
+
+.bookindex{
+    text-align: center;
+    color:#fffffe;
+    background-color:#078080;
+    margin-left:10%;
+    margin-right: 10%;
+    margin-bottom:7px;
+    margin-top:7px;
+    padding-top:30px;
+    padding-bottom: 30px;
+    border-radius:10px ;
+    outline: none;
+    border:solid;
+    border-width:thin;
+    width:80vw;
+    font-size: 150%;
+}
+
+.createbookbutton{
+    text-align: center;
+    color:#272343;
+    background-color:#e3f6f5;
+    margin-left:10%;
+    margin-right: 10%;
+    margin-bottom:7px;
+    margin-top:7px;
+    padding-top:30px;
+    padding-bottom: 30px;
+    border-radius:10px ;
+    /*outline: none;*/
+    border:solid;
+    border-width:thin;
+    width:80vw;
+    font-size: 150%;
+    border-color:#272343;
+}
+
+a { text-decoration:none; }
+
+.iconcolor{
+    width:17vw;
+
+}
+
+.clear_button{
+    outline: none;
+    border: none ;
+    background: transparent;
+    cursor: pointer;
+    align-items: center;
+}
+
+.settings_button{
+    outline: none;
+    border: none ;
+    background: transparent;
+    cursor: pointer;
+
+}
+.hidden_button{
+    outline: none;
+    border: none ;
+    background: transparent;
+    cursor: pointer;
+    opacity:0%;
+    transition: 0.5s;
+}
+
+#putin_button{
+    display:flex;
+    justify-content: center;
+    margin-left:2%;
+    margin-right:2%;
+}
+
+#batu{
+    float:left;
+    margin:2%;
+
+}
+
+#sankaku{
+    float:left;
+    margin:2%;
+
+}
+
+#maru{
+    float:left;
+    margin:2%;
+    
+}
+
+.sub_title{
+    color:#222525;
+    float:right;
+    text-align: right;
+    margin-right:5px;
+}
+
+
+#return{
+    float:left;
+    padding-top:5px;
+    text-align: center;
+
+}
+
+.settings_card{
+    background-color:#e3f6f5 ;
+    text-align: center;
+    width:80vw;
+    margin-left:10vw;
+    border-radius:10px ;
+}
+
+.login{
+    color:#303F9F;
+    text-align: center;
+}
+
+.clear{
+    clear:both;
+}
+
+#main_icon{
+    float:left;
+    color:#303F9F;
+    width:20%;
+    height:100%;
+    padding: top 10%;
+    padding:bottom 10%;
+    box-sizing: border-box;
+}
+
+#main_icon > p{
+    height:70%;
+    padding:top 15%;
+    padding:left 15%;
+}
+
+ /*text-align: center;
+    margin:0 auto;
+    width:100%;
+    display: inline-block;
+    text-align: center;*/
+
