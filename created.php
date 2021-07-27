@@ -2,13 +2,7 @@
 <html>
     <head>
         <meta charaset="UTF-8">
-        <title>新規登録</title>
-        <!--単語帳を作ろう！
-        ログイン機能があったらいいよね
-        追加・削除・更新・読み込み機能(MySQL)機能を備えているのが必須
-        ブラウザで動作確認ができること
-        コードが閲覧できること-->
-        
+        <title>新規登録</title>   
         <link rel="stylesheet" href="main.css" />
             
     </head>
@@ -32,10 +26,6 @@
 
 
     <?php
-    //$create_id=$_POST['create_id'];
-    //echo $user;
-    //$create_password= $_POST['create_password'];
-
 
     include('http://word-note.main.jp/login_safe.php');
 
@@ -53,16 +43,6 @@
 
     // SELECT文の発行
 
-    /*$result = mysqli_query($link, "USE word_note");
-    if (!$result) {
-        die("クエリーが失敗");
-    }*/
-
-
-    //$result_create = mysqli_query($link, "CREATE USER  $create_id . IDENTIFIED BY ' $create_password . '");
-    
-    //echo "CREATE USER . $create_id . IDENTIFIED BY ' . $create_password . '";
-  
     $result_create = mysqli_query($link, "CREATE USER  testaccount identified by '0828'");
   
     if (!mysqli_query($link, "CREATE USER  testaccount identified by '0828'")) {

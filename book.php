@@ -285,8 +285,7 @@
     </html>
 
     <script>
-
-    //jQueryで書き直す
+        //jQueryで書き直す
         console.log(document.getElementById("answer"))
         if (document.getElementById("answer") == null) {
             console.log("nullだよー");
