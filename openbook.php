@@ -40,15 +40,16 @@
         mysqli_set_charset($link, "utf8");
 
         $book_id = $_POST['openbook'];
-       
+
         //登録
-        if (!empty($_POST['question'])&&!empty($_POST['answer'])&&!empty($_POST['regist'])) {
+        if (!empty($_POST['question']) && !empty($_POST['answer']) && !empty($_POST['regist'])) {
             resist_word($_POST['openbook'], $_POST['question'], $_POST['answer']);
         }
 
 
         if (!empty($_POST['openbook'])) {
 
+            /*openbook($_POST['openbook'] );
             $result_book =
              mysqli_query($link, 
              "SELECT * FROM book_name where book_id='" . $_POST['openbook'] . "'");
@@ -58,14 +59,17 @@
             } else {
                 //echo 'きとらんやんけ';
             }
+*/
 
-            while ($row_book = mysqli_fetch_assoc($result_book)) {
+
+            $result_open_book = openbook($_POST['openbook']);
+            while ($row_book = mysqli_fetch_assoc($result_open_book)) {
                 $book_id = $row_book["book_id"];
                 $book_name = $row_book["book_name"];
                 echo "<div style='text-align:center;'><h1>【" . $book_name . "】</h1>";
             }
-            
-            
+
+
             $there_word = are_there_words($book_id);
         ?>
 
