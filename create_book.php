@@ -13,27 +13,24 @@
     <link rel="stylesheet" href="main.css" />
 
 </head>
+<header class='header'>
+    <div class='main_title'>
+        <a href='https://word-note.main.jp/index.php'>
+            <p>自分の、<br>自分による、<br>自分のための単語帳</p>
+        </a>
+    </div>
+    <div class='sub_title'>
+        <p>the word note of me,<br>by me,<br>for me</p>
 
-<?php
+    </div>
+</header>
 
-echo "<header class='header'>
-            <div class='main_title'>
-            <a href='https://word-note.main.jp/index.php'><p>自分の、<br>自分による、<br>自分のための単語帳</p></a>
-            </div>";
-echo "<div class='sub_title'>
-            <p>the word note of me,<br>by me,<br>for me</p>
-
-            </div></header>";
-
-echo "<form method=post action='https://word-note.main.jp/index.php'>
-                <button class='clear_button'>
-                <input type=hidden name='openbook' value='" . $_POST['book_id'] . "'>
-                <img src='./img/iconmonstr-undo-1-32.png'>
-                もどる
-                </button>
-                </form>";
-
-?>
+<form method=post action='https://word-note.main.jp/index.php'>
+    <button class='clear_button'>
+        <img src='./img/iconmonstr-undo-1-32.png'>
+        もどる
+    </button>
+</form>
 
 
 <body>
