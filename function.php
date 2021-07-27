@@ -24,6 +24,20 @@ function revealbook()
     }
 }
 
+function openbook($book_id=0){
+    //引数に初期値を設定しておくと、省略可能
+    include('./login_safe.php');   
+    global $result_open_book; $result_open_book=
+     mysqli_query($link, "SELECT * FROM book_name");
+    if (!$result_book) {
+        die("クエリーが失敗");
+        //mysqli_error(mysqli $result_book);
+    }
+    if(!empty($result_book)){
+        $echo ="revealbook呼ばれているよ";
+        //echo "revealbook呼ばれているよ";
+    }
+}
 
 
 function are_there_words($book_id){
@@ -39,4 +53,13 @@ function are_there_words($book_id){
     return $there_word;
 }
 
-?>
+function resist_word($book,$question,$answer){
+    include('./login_safe.php');  
+     mysqli_query($link, 
+    "INSERT INTO words (book_id,word_id,question,answer,word_memo,last_answer_date,word_weight) 
+    VALUES 
+    ('" . $book. "', NULL, '" 
+    . $question . "','" 
+    . $answer . "',null,null,default)");
+       
+}
