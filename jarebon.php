@@ -39,30 +39,17 @@
 
     if($_POST['ikuwayo']){
 
-        //echo $_POST['name_id'];
-        //echo $_POST['honbun'];
-        //echo $_POST['loop'];
-       if(empty($_POST['loop2'])){
-        $jarebon_name = mysqli_query($link, "insert into jarebon (name_id,loop2,honbun,id_word) VALUES ('".$_POST['name_id']."',1,'".$_POST['honbun']."' ,0)");
+        echo $_POST['name_id'];
+        echo $_POST['book_text'];
+        echo $_POST['loop2'];
   
-       }else{
-
-        if($_POST['name_id']==1){
-            $jarebon_name = mysqli_query($link, "insert into jarebon (name_id,loop,honbun,id_word)VALUES ('".$_POST['name_id']."','".($_POST['loop2']+1)."','".$_POST['honbun']."' ,0)");
-        
-        }else{
-            $jarebon_name = mysqli_query($link, "insert into jarebon (name_id,loop,honbun,id_word) VALUES ('".$_POST['name_id']."','".$_POST['loop2']."','".$_POST['honbun']."' ,0);)");
- 
-        }
-       }
-       if(empty($jarebon_name)){
-           "unchi!!!";
-       }
+        $jarebon_name = mysqli_query($link, "insert into jarebon (name_id,loop2,honbun,id_word) VALUES ('".$_POST['name_id']."','".$_POST['loop2']."','".$_POST['book_text']."' ,0)");
+  
     }
    
     //include('./function.php');
      
-    global $jarebon_name; $jarebon_name = mysqli_query($link, "SELECT * FROM jarebon_people");
+    $jarebon_name = mysqli_query($link, "SELECT * FROM jarebon_people");
     
     if (!$jarebon_name) {
         die("クエリーが失敗");

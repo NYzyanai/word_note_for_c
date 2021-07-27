@@ -58,144 +58,45 @@
 
 
     include('./jarebon_connect.php');
-    $jarebon_people_id = $_POST['jarebon_people_id'];
-    $jarebon_open = mysqli_query($link, "SELECT * FROM jarebon where name_id='" . $jarebon_people_id . "' order by loop2 desc limit 1");
+    echo "<h1>じゃれ本<br>〜エクストリームババア〜</h1>";
+    
+    $jarebon_open = mysqli_query($link, "SELECT * FROM jarebon order by id_word");
 
 
     $thereword = 0;
     while ($jarebon_book_open = mysqli_fetch_assoc($jarebon_open)) {
-        $thereword = 1;
+        
+        
+        $jarebon_people_id=$jarebon_book_open["name_id"];
+        if( $jarebon_people_id==1){
+            echo "<h2>とっとこハム太郎 作</h2>";
+        }elseif($jarebon_people_id==2){
+            echo "<h2>花京院雅子　作</h2>";
+        }elseif($jarebon_people_id==3){
+            echo "<h2>神宮寺元也　作</h2>";
+        }elseif($jarebon_people_id==4){
+            echo "<h2>吉田沙保子　作</h2>";
+        }
         $jarebon_loop = $jarebon_book_open["loop2"];
         $jarebon_honbun = $jarebon_book_open['honbun'];
+
+        /*$maru_int=strpos($jarebon_honbun, '。');
+        $nokori_string=strstr($jarebon_honbun, '。');
+
+        while(strpos($jarebon_honbun, '。')){
+            $maru_int=strpos($jarebon_honbun, '。');
+            $nokori_string=strstr($jarebon_honbun, '。');
+
+            
+        }*/
+
+        $kaigyou_jarebon=str_replace('。','。<br>',$jarebon_honbun );
+        $kaigyou_jarebon=str_replace('。<br>」','。」',$kaigyou_jarebon );
+        $kaigyou_jarebon=str_replace('」','」<br>',$kaigyou_jarebon );
+
+        echo $kaigyou_jarebon ;
     }
 
-    //何も見つからなかったとき
-    if ($thereword == 0) {
-        if ($jarebon_people_id == 1) {
-            echo "初めての文言を入力してください";
-        } else {
-            $jarebon_loop = 1;
-            /*1のループで自分のid-1の人が入力しているとき、自分がまだ入力していない。
-            1のループで自分のid-1の人が入力していないとき、まち。*/
-            $jarebon_open = mysqli_query($link, "SELECT * FROM jarebon where name_id=" . ($jarebon_people_id - 1) . " and loop2='" . $jarebon_loop . "'");
-
-            $thereword = 0;
-            while ($jarebon_book_open = mysqli_fetch_assoc($jarebon_open)) {
-                $thereword = 1;
-                $jarebon_loop = $jarebon_book_open["loop2"];
-                $jarebon_honbun = $jarebon_book_open['honbun'];
-            }
-
-            if ($thereword == 1) {
-                echo "一週目を入力してください";
-            } else {
-                echo "一個前の人が入力してくれていないのでまち";
-            }
-        }
-    } else {
-        //なんか見つかったとき
-        /* 1の人がひらいて何か見つかったとき
-
-       その投稿のloopを取得
-        同ループで4人目が入力しているとき、自分がまだ入力していない。
-        同ループで4人目が入力していないとき、一個前のループで4人目が入力しているか調べる。
-            もし、一個前のループで4人目が入力していないときは、まち？それはありえない。。
-            もし、一個前のループで4人目が入力しているときは、自分が入力するべき?
-            多分そんなことはない。。
-       */
-
-        if ($jarebon_people_id == 1) {
-            $jarebon_open = mysqli_query($link, "SELECT * FROM jarebon where name_id= 4  and loop2='" . $jarebon_loop . "'");
-            $thereword = 0;
-            while ($jarebon_book_open = mysqli_fetch_assoc($jarebon_open)) {
-                $thereword = 1;
-                //$jarebon_loop = $jarebon_book_open["loop2"];
-                $jarebon_honbun = $jarebon_book_open['honbun'];
-            }
-
-            if ($thereword == 1) {
-                //echo "入力してください";
-                echo "<div class='bookindex'>";
-                echo $jarebon_honbun;
-                echo "</div>";
-    ?>
-
-                <form action="https://word-note.main.jp/jarebon.php" method="post">
-                    <p>続きを入れてね</p>
-                    <?php
-                    echo "<input type='hidden' name='loop2' value='"
-                        . ($jarebon_loop+1) .
-                        "'>";
-                    echo "<input type='hidden' name='name_id' value='"
-                        . $jarebon_people_id .
-                        "'>";
-
-                    ?>
-                    <textarea type="text" name="book_text" required></textarea>
-                    <input type="hidden" name="ikuwayo" value=1>
-                    <input type="submit" text="作成！">
-                </form>
-            <?php
-            } else {
-                //同ループで4人目が入力していないとき、一個前のループで4人目が入力しているか調べる。
-                echo "まち";
-            }
-        } else {
-
-            /*もし、ひらいて何か見つかったとき
-            その投稿のloopを取得
-            ループ＋１で一個前の人が入力しているとき、自分がまだ入力していないから入力するべき
-            ループ＋１で一個前の人が入力していないとき、まち。*/
-            //echo ($jarebon_people_id - 1);
-            //echo $jarebon_loop + 1 ;
-            $jarebon_open = mysqli_query($link, "SELECT * FROM jarebon where name_id='" . ($jarebon_people_id - 1) . "'   and loop2='" . ($jarebon_loop + 1) . "'");
-
-            $thereword = 0;
-            while ($jarebon_book_open = mysqli_fetch_assoc($jarebon_open)) {
-                $thereword = 1;
-                //$jarebon_loop = $jarebon_book_open["loop2"];
-                $jarebon_honbun = $jarebon_book_open['honbun'];
-            }
-
-            if ($thereword == 1) {
-                //echo "入力してください";
-
-                echo "<div class='bookindex'>";
-                echo $jarebon_honbun;
-                echo "</div>";
-            ?>
-
-
-
-                <form action="https://word-note.main.jp/jarebon.php" method="post">
-                    <p>続きを入れてね</p>
-                    <?php
-                    echo "<input type='hidden' name='loop2' value='"
-                        . ($jarebon_loop+1) .
-                        "'>";
-                    echo "<input type='hidden' name='name_id' value='"
-                        . $jarebon_people_id .
-                        "'>";
-
-                    ?>
-                    <textarea type="text" name="book_text" required></textarea>
-                    <input type="hidden" name="ikuwayo" value=1>
-                    <input type="submit" text="作成！">
-                </form>
-    <?php
-            } else {
-                echo "一個前の人が入力してくれていないため、まち";
-            }
-        }
-        /*
-        
-
-            もし、ひらいて何か見つかったとき
-            その投稿のloopを取得
-            ループ＋１で一個前の人が入力しているとき、自分がまだ入力していないから入力するべき
-            ループ＋１で一個前の人が入力していないとき、まち。*/
-    }
-    //何か見つかったとき
 
     //開いた人のIDを受けて開く
     /*$jarebon_open =

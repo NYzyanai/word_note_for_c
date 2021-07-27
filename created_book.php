@@ -53,7 +53,6 @@
     $book_name = $_POST['book_name'];
     $book_memo = $_POST['book_memo'];
     mysqli_set_charset($link, "utf8");
-
     $totalcount = mysqli_query($link, "select *  from book_name");
     $totalcount_num = mysqli_num_rows($totalcount);
     //echo $totalcount_num."YEAH";
