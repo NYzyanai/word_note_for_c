@@ -1,13 +1,20 @@
 <?php
 
-function updatebook()
+function updatebook($nowweight, $addweight, $word_id)
 {
     include('./login_safe.php');
-    $nowweight = $_POST['weight'];
-    $addweight = $_POST['addweight'];
+
     $total_weight = $nowweight + $addweight;
-    $update_book = mysqli_query($link, "update words set last_answer_date ='" . $now . "' where word_id='" . $_POST['word_id'] . "'");
-    $update_book = mysqli_query($link, "update words set word_weight='" . $total_weight . "' where word_id='" . $_POST['word_id'] . "'");
+    $update_book_result = mysqli_query(
+        $link,
+        "update words set last_answer_date ='"
+            . $now . "' ,
+      word_weight='" .
+            $total_weight . "' 
+      where word_id='" . $word_id . "'"
+    );
+
+    return $update_book_result;
 }
 
 function revealbook()
