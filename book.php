@@ -18,34 +18,30 @@
 
 ?>
 <?php if (!empty($_POST['openbook'])) : ?>
+
+    <header class='header'>
+        <div class='main_title'>
+            <a href='https://word-note.main.jp/index.php'>
+                <p>自分の、<br>自分による、<br>自分のための単語帳</p>
+            </a>
+        </div>
+        <div class='sub_title'>
+            <form method=post action='https://word-note.main.jp/book.php'>
+                <input type='hidden' name='settings' value='settings'>
+                <input type=hidden name='book_id' value="<?php echo $_POST['openbook'] ?>">
+                <button class='settings_button'><img src='/img/iconmonstr-gear-6-32.png'>
+                </button>
+            </form>
+        </div>
+    </header>
+
     <?php
-    echo "<header class='header'>
-            <div class='main_title'>
-            <a href='https://word-note.main.jp/index.php'><p>自分の、<br>自分による、<br>自分のための単語帳</p></a>
-            </div>";
-    echo "<div class='sub_title'>
-                <form method=post action='https://word-note.main.jp/book.php'><input type='hidden' name='settings' value='settings'><input type=hidden name='book_id' value =" . $_POST['openbook'] . "><button class='settings_button'><img src='/img/iconmonstr-gear-6-32.png'></button></form>
-            </div></header>";
-
-
-
-    //echo $_POST['openbook'];
-
-    //echo $_POST['openbook'];
-
-    //echo "一番目！！！";
     include('./login_safe.php');
-    if ($link) {
-        //echo "リンク立ってる";
-    } else {
-        //echo "リンク立っとらん";
-    }
+
 
     $now = date("Y/m/d H:i:s");
 
     if (!empty($_POST['word_id'])) {
-
-        //echo "koko";
 
         $nowweight = $_POST['weight'];
         $addweight = $_POST['addweight'];
@@ -63,8 +59,7 @@
         $book_id = $row_book["book_id"];
         $word_id = $row_book["word_id"];
         $weight = $row_book["word_weight"];
-        //$book_name=$row_book["book_name"];
-        //echo "<h1>【".$book_name."】</h1>";
+ 
         $there_word = 1;
         echo "<h2 id='question' onclick='clickBtn2()'>" . $row_book["question"] . "</h2>";
         echo "<br>";
@@ -120,7 +115,7 @@
     ";}*/
     ?>
 <?php elseif (!empty($_POST['settings'])) : ?>
-    
+
     <?php echo "    <header class='header'>
         
         <form action='https://word-note.main.jp/index.php' method=post><div class='main_title'>
@@ -254,8 +249,8 @@
     }
     //echo "ここ";
     ?>
-<?php  else : ?>
-<?php
+<?php else : ?>
+    <?php
     echo "<header class='header'>
             <div class='main_title'>
             <a href='https://word-note.main.jp/index.php'><p>自分の、<br>自分による、<br>自分のための単語帳</p></a>
@@ -264,9 +259,9 @@
     echo "うまくスタートできませんでした…";
     echo "<br>";
     echo "<br><div><a href=" . "'https://word-note.main.jp/index.php'" . ">もどる</a></div>";
-?>
+    ?>
 
-<?php endif ; ?>
+<?php endif; ?>
 
 </div>
 
