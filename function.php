@@ -106,3 +106,29 @@ function create_book($book_name, $book_memo)
         }
     }
 }
+
+
+function rewrite_card(){
+
+}
+
+function pre_delete_card(){
+
+}
+
+function delete_card(){
+
+}
+
+function rewrite_book(){
+
+}
+
+function pre_delete_book(){
+
+}
+
+function delete_book(){
+
+    
+}
