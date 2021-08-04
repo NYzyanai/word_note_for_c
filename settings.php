@@ -30,38 +30,28 @@
 
         <!--カードの内容変更 -->
 
-        rewrite_card();
+        <?php
+        include('./login_safe.php');
+        include('./function.php');
 
-        【質問】<?php echo  $_POST['question'] ?>
-        <br>
-        【解答】<?php echo  $_POST['answer'] ?>
-        <br>
-        【単語帳】<?php echo  $_POST['book'] ?>
-        <br>
-        <br>に変更したよ！
-        <?php include('./login_safe.php');
+        $result_bookid = book_id($_POST['book']);
+        $rewrite_bookname_result = rewrite_card($_POST['question'], $_POST['answer'], $result_bookid, $_POST['word_id']);
 
-        $books_name = mysqli_query(
-            $link,
-            "select *
-        from book_name
-        where book_name='" . $_POST['book'] . "'"
-        );
+        if (!empty($rewrite_bookname_result)) : ?>
 
-        while ($books_name_open = mysqli_fetch_assoc($books_name)) {
-            $result_bookid = $books_name_open['book_id'];
-            //echo $books_name_open['book_name'];
-        }
+            【質問】<?php echo  $_POST['question'] ?>
+            <br>
+            【解答】<?php echo  $_POST['answer'] ?>
+            <br>
+            【単語帳】<?php echo  $_POST['book'] ?>
+            <br>
+            <br>に変更したよ！
 
-        $settings_bookname = mysqli_query(
-            $link,
-            "UPDATE words
-        set question='" . $_POST['question'] . "',
-        answer='" . $_POST['answer'] . "',
-        book_id='" . $result_bookid . "'
-        WHERE word_id = '" . $_POST['word_id'] . "'"
-        );
-        ?>
+        <?php else : ?>
+
+            うまく変更できませんでした…
+
+        <?php endif; ?>
 
 
         <form method=post action='https://word-note.main.jp/book.php'>
@@ -105,25 +95,20 @@
     <?php elseif ($_POST['settings'] == 'owaridayomou-nanimo-kamo') : ?>
         <?php
         include('./login_safe.php');
-        $delete = mysqli_query(
-            $link,
-            "delete from words where word_id='" . $_POST['word_id'] . "' LIMIT 1"
-        );
-
         //設定ミスった時のためにLIMIT 
+        $delete_card_result = delete_card($_POST['word_id']);
 
-        $count = mysqli_query(
-            $link,
-            "select word_id from words where book_id='" . $_POST['book_id'] . "'"
-        );
+        if (!empty($delete_card_result)) : ?>
 
-        $count_words_all = 0;
-        while ($count_words = mysqli_fetch_assoc($count)) { //echo "残り単語数" .$count_words['word_id']; $count_words_all++; } 
-            //echo "全部で" .$count_words_all;
-            echo "<p>【" . $_POST['question'] . "】を削除しました！ </p>";
-        }
+        <?php else : ?>
+            <p>【<?php echo $_POST['question'] ?>】を削除しました！ </p>
+        <?php endif; ?>
+
+
+        <?php if ($count_words_all == 0) :
+
+            //残り単語数で判別している
         ?>
-        <?php if ($count_words_all == 0) : ?>
             <form method=post action='https://word-note.main.jp/index.php'>
                 <button id='return' class='clear_button'>
                     <img src='./img/iconmonstr-undo-1-32.png'>

@@ -107,28 +107,57 @@ function create_book($book_name, $book_memo)
     }
 }
 
-
-function rewrite_card(){
-
+function book_id($book_name)
+{
+    include('./login_safe.php');
+    $books_name = mysqli_query(
+        $link,
+        "select * from book_name where book_name='" . $book_name . "'"
+    );
+    while ($books_name_open = mysqli_fetch_assoc($books_name)) {
+        $result_bookid = $books_name_open['book_id'];
+    }
+    return $result_bookid;
 }
 
-function pre_delete_card(){
+function rewrite_card($question, $answer, $book_id, $word_id)
+{
+    include('./login_safe.php');
 
+    $rewrite_bookname_result = mysqli_query(
+        $link,
+        "UPDATE words
+    set question='" . $question . "',
+    answer='" . $answer . "',
+    book_id='" . $book_id . "'
+    WHERE word_id = '" . $word_id . "'"
+    );
+
+    return $rewrite_bookname_result;
 }
 
-function delete_card(){
-
+function pre_delete_card()
+{
 }
 
-function rewrite_book(){
-
+function delete_card($word_id)
+{
+    include('./login_safe.php');
+    $delete_card_result = mysqli_query(
+        $link,
+        "delete from words where word_id='" . $word_id . "' LIMIT 1"
+    );
+    return $delete_card_result;
 }
 
-function pre_delete_book(){
-
+function rewrite_book()
+{
 }
 
-function delete_book(){
+function pre_delete_book()
+{
+}
 
-    
+function delete_book()
+{
 }
