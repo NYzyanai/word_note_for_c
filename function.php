@@ -120,6 +120,19 @@ function book_id($book_name)
     return $result_bookid;
 }
 
+function countwords( $book_id){
+    include('./login_safe.php');
+    $count_word= mysqli_query(
+        $link,
+        "select * from words where book_id='" . $book_id . "'"
+    );
+    $count_words_all=0;
+    while ($books_open = mysqli_fetch_assoc($count_word)) {
+        $count_words_all++;
+    }
+    return $count_words_all;
+}
+
 function rewrite_card($question, $answer, $book_id, $word_id)
 {
     include('./login_safe.php');
