@@ -189,8 +189,32 @@ function delete_book($book_name_value)
 
     mysqli_query($link, " update words set book_id=999 where book_id='" . $book_name_value . "'");
 
-    $delete_book_result= mysqli_query($link, "delete from book_name where book_id='" . $book_name_value . "' limit 1");
+    $delete_book_result = mysqli_query($link, "delete from book_name where book_id='" . $book_name_value . "' limit 1");
 
     return $delete_book_result;
- 
+}
+
+function answer_card($word_id, $nowweight, $addweight)
+{
+
+    include('./login_safe.php');
+    if (!empty($word_id)) {
+        $total_weight = $nowweight + $addweight;
+        $now = date("Y/m/d H:i:s");
+
+        mysqli_query($link, "update words set last_answer_date ='" . $now . "' where word_id='" . $word_id . "'");
+
+        mysqli_query($link, "update words set word_weight='" . $total_weight . "' where word_id='" . $word_id . "'");
+    }
+
+    $there_word = 0;
+}
+
+function open_card($bookid)
+{
+    include('./login_safe.php');
+
+    $open_card = mysqli_query($link, "SELECT * FROM words where book_id='" . $bookid . "' order by word_weight limit 1");
+    return $open_card;
+
 }

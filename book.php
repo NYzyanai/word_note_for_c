@@ -25,6 +25,7 @@
                 <p>自分の、<br>自分による、<br>自分のための単語帳</p>
             </a>
         </div>
+
         <div class='sub_title'>
             <form method=post action='https://word-note.main.jp/book.php'>
                 <input type='hidden' name='settings' value='settings'>
@@ -36,34 +37,45 @@
     </header>
 
     <?php
-    include('./login_safe.php');
 
+
+    include('./login_safe.php');
+    include('./function.php');
 
     $now = date("Y/m/d H:i:s");
 
+
     if (!empty($_POST['word_id'])) {
 
-        $nowweight = $_POST['weight'];
+        //echo "koko";
+        answer_card($_POST['word_id'], $_POST['weight'], $_POST['addweight']);
+        /*$nowweight = $_POST['weight'];
         $addweight = $_POST['addweight'];
         $total_weight = $nowweight + $addweight;
         $update_book = mysqli_query($link, "update words set last_answer_date ='" . $now . "' where word_id='" . $_POST['word_id'] . "'");
         $update_book = mysqli_query($link, "update words set word_weight='" . $total_weight . "' where word_id='" . $_POST['word_id'] . "'");
+        */
     }
     $there_word = 0;
 
 
     mysqli_set_charset($link, "");
-    $open_book = mysqli_query($link, "SELECT * FROM words where book_id='" . $_POST['openbook'] . "' order by word_weight limit 1");
 
-    while ($row_book = mysqli_fetch_assoc($open_book)) {
+    $open_card = open_card($_POST['openbook']);
+
+    while ($row_book = mysqli_fetch_assoc($open_card)) {
         $book_id = $row_book["book_id"];
         $word_id = $row_book["word_id"];
         $weight = $row_book["word_weight"];
- 
+        $answer = $row_book["answer"];
+        $question = $row_book["question"];
         $there_word = 1;
-        echo "<h2 id='question' onclick='clickBtn2()'>" . $row_book["question"] . "</h2>";
+    }
+
+    if ($there_word != 0) {
+        echo "<h2 id='question' onclick='clickBtn2()'>" . $question . "</h2>";
         echo "<br>";
-        echo "<h2 id='answer'>" . $row_book["answer"] . "</h2>";
+        echo "<h2 id='answer'>" .  $answer . "</h2>";
         echo "<div id='putin_button'>";
         echo "<div id='batu'><form method=post action='https://word-note.main.jp/book.php'><input type=hidden name='openbook' value=" . $book_id . "><input type=hidden name='addweight' value=0.2><input type=hidden name='weight' value=" . $weight . "><input type=hidden name='word_id' value =" . $word_id . "><button class='clear_button' ><img src='./img/iconmonstr-smiley-3-240.png' class='iconcolor'></button></div>";
         echo "<div id='sankaku'><form method=post action='https://word-note.main.jp/book.php'><input type=hidden name='openbook' value=" . $book_id . "><input type=hidden name='addweight' value=0.5><input type=hidden name='weight' value=" . $weight . "><input type=hidden name='word_id' value =" . $word_id . "><button class='clear_button' ><img src='./img/iconmonstr-paperclip-2-240.png' class='iconcolor'></button></div>";
@@ -229,7 +241,7 @@
         <input type=hidden name='book_id' value='" . $_POST['book_id'] . "'>
         <input type=hidden name='settings' value='delete'>
         <input type=hidden name='question' value=" . $set_book['question'] . ">
-        <div style='text-align:center;'>
+        <!--<div style='text-align:center;'>
             <button class='clear_button'>
             <img src='./img/iconmonstr-warning-6-64.png' width='46' height='46' style='float:left; margin-top:0.5em'>
 
@@ -237,7 +249,7 @@
                         この単語を削除する</h2>
             </button>
             </form>
-        </div>
+        </div>-->
         ";
 
         //ドロップダウンボックス作ってみるかー
