@@ -65,11 +65,20 @@
 
 
         while ($row_book = mysqli_fetch_assoc($open_card)) {
+
             $book_id = $row_book["book_id"];
             $word_id = $row_book["word_id"];
-            $weight = $row_book["word_weight"];
-            $answer = $row_book['answer'];
             $question = $row_book['question'];
+            $answer = $row_book['answer'];
+            $word_memo = $row_book['word_memo'];
+            $last_answer_date = $row_book['last_answer_date'];
+
+            $weight = $row_book["word_weight"];
+
+            $first_answer = $row_book["first_answer"];
+            $second_answer = $row_book["second_answer"];
+            $clear_flag = $row_book["clear_flag"];
+
             $there_word = 1;
         } ?>
 
@@ -85,11 +94,24 @@
 
             <div id='putin_button'>
                 <div id='batu'>
+                    
                     <form method=post action='https://word-note.main.jp/book.php'>
                         <input type=hidden name='openbook' value=<?php echo  $book_id ?>>
-                        <input type=hidden name='addweight' value=0.2>
-                        <input type=hidden name='weight' value=<?php echo  $weight ?>>
                         <input type=hidden name='word_id' value=<?php echo  $word_id ?>>
+
+                        <!--<input type=hidden name='addweight' value=0.2>-->
+
+                        <input type=hidden name='last_answer_date' value=<?php echo  $last_answer_date ?>>
+
+                        <input type=hidden name='weight' value=<?php echo  $weight ?>>
+
+                        <input type=hidden name='first_answer' value=<?php echo  $first_answer ?>>
+                        <input type=hidden name='second_answer' value=<?php echo  $second_answer ?>>
+
+                        <input type=hidden name='clear_flag' value=<?php echo  $clear_flag ?>>
+
+                      
+
                         <button class='clear_button'>
                             <img src='./img/iconmonstr-smiley-3-240.png' class='iconcolor'>
                         </button>
@@ -99,9 +121,19 @@
 
                     <form method=post action='https://word-note.main.jp/book.php'>
                         <input type=hidden name='openbook' value=<?php echo  $book_id ?>>
-                        <input type=hidden name='addweight' value=0.5>
-                        <input type=hidden name='weight' value=<?php echo  $weight ?>>
                         <input type=hidden name='word_id' value=<?php echo  $word_id ?>>
+
+                        <!--<input type=hidden name='addweight' value=0.2>-->
+
+                        <input type=hidden name='last_answer_date' value=<?php echo  $last_answer_date ?>>
+
+                        <input type=hidden name='weight' value=<?php echo  $weight ?>>
+
+                        <input type=hidden name='first_answer' value=<?php echo  $first_answer ?>>
+                        <input type=hidden name='second_answer' value=<?php echo  $second_answer ?>>
+
+                        <input type=hidden name='clear_flag' value=<?php echo  $clear_flag ?>>
+
                         <button class='clear_button'>
                             <img src='./img/iconmonstr-paperclip-2-240.png' class='iconcolor'>
                         </button>
@@ -109,9 +141,20 @@
 
                 <div id='maru'>
                     <form method=post action='https://word-note.main.jp/book.php' name='form1'>
-                        <input type=hidden name='openbook' value=<?php echo  $book_id ?>>
-                        <input type=hidden name='addweight' value=1>
-                        <input type=hidden name='weight' value=<?php echo  $weight ?>><input type=hidden name='word_id' value=<?php echo  $word_id ?>>
+                                                <input type=hidden name='openbook' value=<?php echo  $book_id ?>>
+                        <input type=hidden name='word_id' value=<?php echo  $word_id ?>>
+
+                        <!--<input type=hidden name='addweight' value=0.2>-->
+
+                        <input type=hidden name='last_answer_date' value=<?php echo  $last_answer_date ?>>
+
+                        <input type=hidden name='weight' value=<?php echo  $weight ?>>
+
+                        <input type=hidden name='first_answer' value=<?php echo  $first_answer ?>>
+                        <input type=hidden name='second_answer' value=<?php echo  $second_answer ?>>
+
+                        <input type=hidden name='clear_flag' value=<?php echo  $clear_flag ?>>
+                        
                         <button class='clear_button' onclick='yeahBtn()'>
                             <img src='./img/iconmonstr-smiley-1-240.png' class='iconcolor'>
                         </button>
@@ -277,13 +320,9 @@
     </div>
 
 <?php endif; ?>
-
-
-
 </body>
 
 </html>
-
 <script>
     console.log(document.getElementById("answer"))
 
