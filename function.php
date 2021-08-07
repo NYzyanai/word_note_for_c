@@ -20,7 +20,7 @@ function updatebook($nowweight, $addweight, $word_id)
 function revealbook()
 {
     include('./login_safe.php');
-    global $result_book;
+
     $result_book = mysqli_query($link, "SELECT * FROM book_name");
     if (!$result_book) {
         die("クエリーが失敗");
@@ -30,6 +30,8 @@ function revealbook()
         $echo = "revealbook呼ばれているよ";
         //echo "revealbook呼ばれているよ";
     }
+
+    return $result_book;
 }
 
 function openbook($book_id)
@@ -105,4 +107,90 @@ function create_book($book_name, $book_memo)
             return $return_result_book;
         }
     }
+}
+
+function book_id($book_name)
+{
+    include('./login_safe.php');
+    $books_name = mysqli_query(
+        $link,
+        "select * from book_name where book_name='" . $book_name . "'"
+    );
+    while ($books_name_open = mysqli_fetch_assoc($books_name)) {
+        $result_bookid = $books_name_open['book_id'];
+    }
+    return $result_bookid;
+}
+
+function countwords($book_id)
+{
+    include('./login_safe.php');
+    $count_word = mysqli_query(
+        $link,
+        "select * from words where book_id='" . $book_id . "'"
+    );
+    $count_words_all = 0;
+    while ($books_open = mysqli_fetch_assoc($count_word)) {
+        $count_words_all++;
+    }
+    return $count_words_all;
+}
+
+function rewrite_card($question, $answer, $book_id, $word_id)
+{
+    include('./login_safe.php');
+
+    $rewrite_bookname_result = mysqli_query(
+        $link,
+        "UPDATE words
+    set question='" . $question . "',
+    answer='" . $answer . "',
+    book_id='" . $book_id . "'
+    WHERE word_id = '" . $word_id . "'"
+    );
+
+    return $rewrite_bookname_result;
+}
+
+function pre_delete_card()
+{
+}
+
+function delete_card($word_id)
+{
+    include('./login_safe.php');
+    $delete_card_result = mysqli_query(
+        $link,
+        "delete from words where word_id='" . $word_id . "' LIMIT 1"
+    );
+    return $delete_card_result;
+}
+
+function rewrite_book()
+{
+    include('./login_safe.php');
+    $settings_bookname = mysqli_query($link, "SELECT * FROM book_name");
+
+    return $settings_bookname;
+    /*while ($set_bookname = mysqli_fetch_assoc($settings_bookname)) {
+        echo "<option value=" . $set_bookname['book_id'] . ">" . $set_bookname['book_name'] . "
+                    </option>";
+    }*/
+}
+
+function pre_delete_book()
+{
+}
+
+function delete_book($book_name_value)
+{
+    include('./login_safe.php');
+    //まず全単語を退避させる
+
+    mysqli_query($link, " update words set book_id=999 where book_id='" . $book_name_value . "'");
+
+    $delete_book_result= mysqli_query($link, "delete from book_name where book_id='" . $book_name_value . "' limit 1");
+
+    return $delete_book_result;
+ 
 }
