@@ -177,7 +177,7 @@
 
     <?php elseif ($_POST['settings'] == 'book_change') :
 
-        //echo "気合で単語帳の名前とか帰れるページ作る" ;
+        //echo "気合で単語帳の名前か変更できるページ作る" ;
         include('./login_safe.php');
         include('./function.php');
 
