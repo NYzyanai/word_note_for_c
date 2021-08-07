@@ -177,9 +177,9 @@
 
     <?php elseif ($_POST['settings'] == 'book_change') :
 
-        //echo "気合で単語帳の名前とか帰れるページ作る" ;
-
+        //echo "気合で単語帳の名前か変更できるページ作る" ;
         include('./login_safe.php');
+        include('./function.php');
 
     ?>
 
@@ -196,9 +196,11 @@
                 <select name='book2'>
 
                     <?php
-                    $settings_bookname = mysqli_query($link, "SELECT * FROM book_name");
 
-                    while ($set_bookname = mysqli_fetch_assoc($settings_bookname)) {
+                    $result_book = revealbook();
+                    //ここはどうやってfunction化すればいいんだろう？
+
+                    while ($set_bookname = mysqli_fetch_assoc($result_book)) {
                         echo "<option value=" . $set_bookname['book_id'] . ">" . $set_bookname['book_name'] . "
                     </option>";
                     } ?>
@@ -236,26 +238,26 @@
         </form>
 
         <body>
-            <?php include('./login_safe.php'); ?>
+            <?php
+            include('./login_safe.php');
+            include('./function.php');
+            ?>
             <form method=post>
                 <div style='text-align:center;  margin-top:20px;'>
-                    <?php
-                    $settings_bookname_all = mysqli_query(
-                        $link,
-                        "SELECT * FROM book_name"
-                    );
+                    <select name='book_name_value'>
+                        <?php
+                        $result_book = revealbook();
+                        while ($set_bookname_all = mysqli_fetch_assoc($result_book)) {
+                            echo "<option value=" . $set_bookname_all['book_id'] . ">" . $set_bookname_all['book_name'] . "</option>";
+                        };
+                        ?>
 
-                    echo "<select name='book_name_value'>";
-                    while ($set_bookname_all = mysqli_fetch_assoc($settings_bookname_all)) {
-                        echo "<option value=" . $set_bookname_all['book_id'] . ">" . $set_bookname_all['book_name'] . "</option>";
-                    };
-                    ?>
                     </select>
 
                     <?php echo $set_bookname_all['book_name']; ?>
                     <?php echo $set_bookname_all['book_id']; ?>
                     <br>
-                    <input type=hidden name='book_id' value=" . $set_bookname_all['book_id'] . ">
+                    <input type=hidden name='book_id' value="<?php echo  $set_bookname_all['book_id'] ?>">
                     <input type=hidden name='settings' value='book_delete_true'>
 
                     <h2>
@@ -263,7 +265,7 @@
                     </h2>
 
                     <button class='clear_button'>
-                        <input type=hidden name='book_name' value=" . $set_bookname_all['book_name'] . ">
+                        <input type=hidden name='book_name' value="<?php $set_bookname_all['book_name'] ?>">
                         <input type=hidden name='book_name' value='あ'>
                         <img src='./img/iconmonstr-warning-6-64.png' width='46' height='46' style='float:left; margin-top:0.5em'>
                         <h2>
@@ -272,7 +274,13 @@
                     </button>
                 </div>
             </form>
-        <?php elseif (!empty($_POST['book_name_value']) && 'book_delete_true' == $_POST['settings']) : ?> include('./login_safe.php'); echo "<form method=post action='https://word-note.main.jp/index.php'>
+        <?php elseif (!empty($_POST['book_name_value']) && 'book_delete_true' == $_POST['settings']) : ?>
+
+            <?php
+            include('./login_safe.php');
+            include('./function.php');
+            ?>
+            <form method=post action='https://word-note.main.jp/index.php'>
                 <button class='clear_button'>
                     <img src='./img/iconmonstr-undo-1-32.png'>
                     もどる
@@ -281,7 +289,12 @@
 
             <div style='text-align:center;'>
                 <img src='./img/iconmonstr-warning-6-64.png' width='46' height='46' style='margin-top:0.5em'>
-                <?php $settings_bookname_all_delete = mysqli_query($link, "SELECT * FROM book_name where book_id='" . $_POST['book_name_value'] . "'");
+                <?php
+                //echo $_POST['book_name_value'];
+
+                $settings_bookname_all_delete = openbook($_POST['book_name_value']);
+
+                //$settings_bookname_all_delete = mysqli_query($link, "SELECT * FROM book_name where book_id='" . $_POST['book_name_value'] . "'");
                 while ($set_bookname_all_delete = mysqli_fetch_assoc($settings_bookname_all_delete)) {
                     $book_name = $set_bookname_all_delete['book_name'];
                 };
@@ -297,34 +310,64 @@
             <br>
             <form method=post style='text-align:center;'>
                 <input type=hidden name='settings' value='sayonara-nanimo-kamo'>
-                <input type=hidden name='book_name_value' value='<?php $_POST['book_name_value'] ?>'>
+                <input type=hidden name='book_name_value' value='<?php echo $_POST['book_name_value'] ?>'>
                 <button class='clear_button' style=' background-color: #ffd803; font-size:3vw; border-radius:10px;'>
                     削除する
                 </button>
             </form>
-        <?php elseif (!empty($_POST['book_name_value']) && 'sayonara-nanimo-kamo' == $_POST['settings']) : 
+
+        <?php elseif (!empty($_POST['book_name_value']) && 'sayonara-nanimo-kamo' == $_POST['settings']) : ?>
+
+            <?php
             include('./login_safe.php');
+            include('./function.php');
             //単語帳が存在していた場合には、bookidを999に退避させる 
+            //まじで単語帳を削除する操作
+
+            $delete_book_result = delete_book($_POST['book_name_value']);
+            ?>
 
 
-            $delete_book_words = mysqli_query($link, " update words set book_id=999 where book_id='" . $_POST[' book_name_value'] . "'");
-            $delete_book = mysqli_query($link, "delete from book_name where book_id='" . $_POST['book_name_value'] . "' limit 1");
-            if (!$delete_book) :
-                echo "消せなかった";
-            else :
-                echo "単語帳を削除しました！！";
-                echo "<form method=post action='https://word-note.main.jp/index.php'>
+            <?php if (!$delete_book_result) : ?>
+                消せなかった
+            <?php else : ?>
+                単語帳を削除しました！！
+                <form method=post action='https://word-note.main.jp/index.php'>
                     <button id='return' class='clear_button'>
                         <img src='./img/iconmonstr-undo-1-32.png'>
                         もどる
                     </button>
-                </form>";
-            endif;
-            
+                </form>
+            <?php endif; ?>
 
-         elseif ($_POST['settings'] == 'book_update' && !empty($_POST['book2']) && !empty($_POST['newtitle'])) : ?> include('./login_safe.php'); //ここで削除前の本のタイトル取得しておく $before_book=mysqli_query($link, "select book_name from book_name where book_id='" . $_POST['book2'] . "'" ); while ($title=mysqli_fetch_assoc($before_book)) { $before_book_name=$title['book_name']; } $update_book=mysqli_query($link, "update book_name
+        <?php
+    elseif ($_POST['settings'] == 'book_update' && !empty($_POST['book2']) && !empty($_POST['newtitle'])) : ?>
+
+            <?php
+            include('./login_safe.php');
+
+            //ここで削除前の本のタイトル取得しておく 
+
+
+            $before_book = mysqli_query($link, "select book_name from book_name where book_id='" . $_POST['book2'] . "'");
+            while ($title = mysqli_fetch_assoc($before_book)) {
+                $before_book_name = $title['book_name'];
+            }
+            $update_book = mysqli_query($link, "update book_name
             set book_name='" . $_POST['newtitle'] . "'
-            where book_id='" . $_POST['book2'] . "'" ); <?php if (!$update_book) : ?> echo "updateできなかった" ; <?php else : ?> echo "【" . $before_book_name . "】を<br>【" . $_POST['newtitle'] . "】というタイトルに<br>変更しました！" ; echo "<form method=post action='https://word-note.main.jp/index.php'>
+            where book_id='" . $_POST['book2'] . "'");
+            ?>
+            <?php if (!$update_book) : ?>
+                updateできなかった
+            <?php else : ?>
+                【<?php echo $before_book_name ?> 】を
+                <br>
+                【<?php echo $_POST['newtitle'] ?> 】
+                というタイトルに
+                <br>
+                変更しました！
+
+                <form method=post action='https://word-note.main.jp/index.php'>
                     <button id='return' class='clear_button'>
                         <img src='./img/iconmonstr-undo-1-32.png'>
                         もどる
