@@ -174,6 +174,16 @@
                 </button>
             </form>
         </div>
+        <div>
+           
+                <button class='clear_button settings_card' style='margin-top:10px; margin-bottom:10px;'>
+                    <h1>
+                        ※試作中（動作しません）
+                        <br>
+                        CSVアップロード
+                    </h1>
+                </button>
+        </div>
 
     <?php elseif ($_POST['settings'] == 'book_change') :
 
