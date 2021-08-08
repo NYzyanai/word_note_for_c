@@ -13,7 +13,7 @@
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <?php
     include('./login_safe.php');
-    include('./function.php'); ?>
+    include('./function2.php'); ?>
 </head>
 
 <header class='header'>
@@ -25,7 +25,7 @@
     <!--設定に来た時だけ出さないようにしたい-->
     <?php if (empty($_POST['settings'])) : ?>
         <div class='sub_title'>
-            <form method=post action='https://word-note.main.jp/book.php'>
+            <form method=post action='https://word-note.main.jp/book2.php'>
                 <input type='hidden' name='settings' value='settings'>
                 <input type=hidden name='book_id' value="<?php echo $_POST['openbook'] ?>">
                 <button class='settings_button'><img src='/img/iconmonstr-gear-6-32.png'>
@@ -41,7 +41,15 @@
 
 
 <body>
-    <?php if (!empty($_POST['openbook'])) :
+
+    <?php
+
+/*echo "IDは【「".$_POST['word_id'],
+"アンサーは【「".$_POST['answer'],
+"ファーストアンサーは【「".$_POST['first_answer'],
+"セカンドアンサーは【「".$_POST['second_answer'];*/
+
+    if (!empty($_POST['openbook'])) :
 
         //もし、○なら10日間出題されない。○が3回連続になったらALLモードでしか出ない。
         //もし△なら2日間でない。ただし△が2回連続になったら翌日出る。
@@ -54,9 +62,65 @@
         <?php
         if (!empty($_POST['word_id'])) {
             //情報の書き換え
-            answer_card($_POST['word_id'], $_POST['weight'], $_POST['addweight']);
-        }
 
+
+            /*
+            //ここで回答した情報を書き換える
+            $now = new DateTime();
+            $next_answer_date = new DateTime();
+
+            $now = $now->format('Y/m/d H:i:s');
+            /*$next_answer_date = $next_answer_date->format('Y/m/d H:i:s');
+echo  $now ;
+
+
+            $clear_flag = 0;
+
+            if ($_POST['answer'] = 2) {
+                if ($_POST['first_answer'] == 2 && $_POST['second_answer'] == 2) {
+                    $clear_flag = 1;
+                    //return sitaine
+                }
+                $next_answer_date=date('Y/m/d H:i:s',strtotime('+10 days'));
+
+                //$next_answer_date = $now->modify('+10 days');
+            } elseif ($_POST['answer'] = 1) {
+                //$next_answer_date = $now->modify('+2 days');
+                $next_answer_date=date('Y/m/d H:i:s',strtotime('+2 days'));
+            } elseif ($_POST['answer'] = 0) {
+                //$next_answer_date = $now->modify('+12 hours');
+                $next_answer_date=date('Y/m/d H:i:s',strtotime('+12 hours'));
+            }
+echo $next_answer_date;
+            $second_answer = $_POST['first_answer'];
+            $first_answer = $_POST['answer'];
+
+            include('./login_safe.php');
+
+            $result = mysqli_query($link, "update words2
+     set
+     last_answer_date='" . $now . "',
+     next_answer_date ='" . $next_answer_date . "',
+     first_answer= '" . $first_answer . "',
+     second_answer= '" . $second_answer . "',
+     clear_flag= '" . $clear_flag . "'
+     where word_id='" . $_POST['word_id'] . "'");
+
+*/
+            $result = answer_card(
+                $_POST['word_id'],
+                $_POST['answer'],
+                $_POST['first_answer'],
+                $_POST['second_answer']
+            );
+
+
+            if (!empty($result)) {
+                //echo "書き換え完了";
+            } else {
+                //echo "書き換えがうまくいっていない";
+            }
+        }
         $there_word = 0;
 
 
@@ -73,7 +137,6 @@
             $word_memo = $row_book['word_memo'];
             $last_answer_date = $row_book['last_answer_date'];
 
-            $weight = $row_book["word_weight"];
 
             $first_answer = $row_book["first_answer"];
             $second_answer = $row_book["second_answer"];
@@ -93,10 +156,13 @@
             </h2>
 
             <div id='putin_button'>
+
                 <div id='batu'>
-                    
-                    <form method=post action='https://word-note.main.jp/book.php'>
+
+                    <form method=post action='https://word-note.main.jp/book2.php'>
+
                         <input type=hidden name='openbook' value=<?php echo  $book_id ?>>
+
                         <input type=hidden name='word_id' value=<?php echo  $word_id ?>>
 
                         <!--<input type=hidden name='addweight' value=0.2>-->
@@ -108,23 +174,27 @@
                         <input type=hidden name='first_answer' value=<?php echo  $first_answer ?>>
                         <input type=hidden name='second_answer' value=<?php echo  $second_answer ?>>
 
+                        <input type=hidden name='answer' value="0">
                         <input type=hidden name='clear_flag' value=<?php echo  $clear_flag ?>>
 
-                      
+
 
                         <button class='clear_button'>
                             <img src='./img/iconmonstr-smiley-3-240.png' class='iconcolor'>
                         </button>
+                    </form>
                 </div>
 
                 <div id='sankaku'>
 
-                    <form method=post action='https://word-note.main.jp/book.php'>
+                    <form method=post action='https://word-note.main.jp/book2.php'>
+
                         <input type=hidden name='openbook' value=<?php echo  $book_id ?>>
+
                         <input type=hidden name='word_id' value=<?php echo  $word_id ?>>
 
                         <!--<input type=hidden name='addweight' value=0.2>-->
-
+                        <input type=hidden name='answer' value="1">
                         <input type=hidden name='last_answer_date' value=<?php echo  $last_answer_date ?>>
 
                         <input type=hidden name='weight' value=<?php echo  $weight ?>>
@@ -137,14 +207,16 @@
                         <button class='clear_button'>
                             <img src='./img/iconmonstr-paperclip-2-240.png' class='iconcolor'>
                         </button>
+                    </form>
                 </div>
 
                 <div id='maru'>
-                    <form method=post action='https://word-note.main.jp/book.php' name='form1'>
-                                                <input type=hidden name='openbook' value=<?php echo  $book_id ?>>
+                    <form method=post action='https://word-note.main.jp/book2.php' name='form1'>
+                        <input type=hidden name='openbook' value=<?php echo  $book_id ?>>
                         <input type=hidden name='word_id' value=<?php echo  $word_id ?>>
 
                         <!--<input type=hidden name='addweight' value=0.2>-->
+                        <input type=hidden name='answer' value=2>
 
                         <input type=hidden name='last_answer_date' value=<?php echo  $last_answer_date ?>>
 
@@ -154,7 +226,7 @@
                         <input type=hidden name='second_answer' value=<?php echo  $second_answer ?>>
 
                         <input type=hidden name='clear_flag' value=<?php echo  $clear_flag ?>>
-                        
+
                         <button class='clear_button' onclick='yeahBtn()'>
                             <img src='./img/iconmonstr-smiley-1-240.png' class='iconcolor'>
                         </button>
@@ -202,7 +274,7 @@
     <?php elseif (!empty($_POST['settings'])) : ?>
         <div>
             <div>
-                <form method=post action='https://word-note.main.jp/book.php'>
+                <form method=post action='https://word-note.main.jp/book2.php'>
                     <input type=hidden name='openbook' value=<?php echo $_POST['book_id'] ?>>
                     <button id='return' class='clear_button'>
                         <img src='./img/iconmonstr-undo-1-32.png'>
@@ -248,7 +320,9 @@
                     <div class='settings_card'>
                         【解答】
                         <br>
-                        <textarea name='answer' type='text' rows='2' cols='40'><?php echo $answer ?></textarea>
+                        <textarea name='answer' type='text' rows='2' cols='40'>
+                            <?php echo $answer ?>
+                        </textarea>
                     </div>
 
                     <!--$settings_bookname = mysqli_query($link, "SELECT * FROM book_name");-->
@@ -319,7 +393,12 @@
         </a>
     </div>
 
-<?php endif; ?>
+<?php endif;
+
+
+
+?>
+
 </body>
 
 </html>
