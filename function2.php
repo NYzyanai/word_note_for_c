@@ -199,23 +199,31 @@ function answer_card($word_id, $nowweight, $addweight, $kekka, $first_answer, $s
 
     //ここで回答した情報を書き換える
 
-    $next_answer = new DateTime('now');
-
+    $next_answer_date = new DateTime('now');
+    $clear_flag = 0;
     if ($kekka = "maru") {
         if ($first_answer == "maru" && $second_answer == "maru") {
             $clear_flag = 1;
             //return sitaine
         }
-        $next_answer->modify('+10 days');
+        $next_answer_date->modify('+10 days');
     } elseif ($kekka = "sankaku") {
-        $next_answer->modify('+2 days');
+        $next_answer_date->modify('+2 days');
     } elseif ($kekka = "batu") {
-        $next_answer->modify('+12 hours');
+        $next_answer_date->modify('+12 hours');
     }
 
     $second_answer = $first_answer;
     $first_answer = $kekka;
 
+    include('./login_safe.php');
+    mysqli_query($link, "update words2
+     set
+      next_answer_date ='" . $next_answer_date . "',
+     first_answer= '" . $first_answer . "',
+     second_answer= '" . $second_answer . "',
+     clear_flag= '" . $clear_flag . "',
+     where word_id='" . $word_id . "'");
     /*
     今回のanswer,second_anser,first_answerがすべて丸の時
     clear_flagを立ててallモードでしか出ないようにする
