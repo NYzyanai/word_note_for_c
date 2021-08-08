@@ -172,10 +172,7 @@ function rewrite_book()
     $settings_bookname = mysqli_query($link, "SELECT * FROM book_name");
 
     return $settings_bookname;
-    /*while ($set_bookname = mysqli_fetch_assoc($settings_bookname)) {
-        echo "<option value=" . $set_bookname['book_id'] . ">" . $set_bookname['book_name'] . "
-                    </option>";
-    }*/
+
 }
 
 function pre_delete_book()
@@ -236,47 +233,6 @@ function answer_card($word_id, $kekka, $first_answer, $second_answer)
 
     return $result;
 }
-/*
-
-    フラグかんり　
-
-    まるは2
-    罰は０
-    三角は１
-    今回のanswer,second_anser,first_answerがすべて丸の時
-    clear_flagを立ててallモードでしか出ないようにする
-    first_answerはsecond_answerへ
-    second_answerは消える
-    //もし、○なら10日間出題されない。○が3回連続になったらALLモードでしか出ない。
-    //もし△なら2日間でない。ただし△が2回連続になったら翌日出る。
-    //×翌日出る
-    //つまり、2回前の解答内容を保持しておく必要がある。
-    これロジックなんか変な気がする
-    最終といた日とlast_answerの結果で毎回抽出するの大変じゃないかな
-次のanswerdateを毎回入れたほうがいい気がしてきた
-もしsannkakuなら、
-answerdateを今日から＋２
-もし罰なら
-answerdateを明日にする　とか
-もし丸なら
-answerdateを10日後にする　みたいな
-そしたらlastanswerdateを入れる意味って何だろう？と思ったけど、
-もし「answerdate」を過ぎているものが複数件あった場合には
-orderby lastanswerdateにしたほうがよさそう
-じゃないかな
-    */
-
-/*include('./login_safe.php');
-    if (!empty($word_id)) {
-        $total_weight = $nowweight + $addweight;
-        $now = date("Y/m/d H:i:s");
-
-        mysqli_query($link, "update words set last_answer_date ='" . $now . "' where word_id='" . $word_id . "'");
-
-        mysqli_query($link, "update words set word_weight='" . $total_weight . "' where word_id='" . $word_id . "'");
-    }
-
-    $there_word = 0;*/
 
 
 

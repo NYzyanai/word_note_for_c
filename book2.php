@@ -61,52 +61,7 @@
 
         <?php
         if (!empty($_POST['word_id'])) {
-            //情報の書き換え
 
-
-            /*
-            //ここで回答した情報を書き換える
-            $now = new DateTime();
-            $next_answer_date = new DateTime();
-
-            $now = $now->format('Y/m/d H:i:s');
-            /*$next_answer_date = $next_answer_date->format('Y/m/d H:i:s');
-echo  $now ;
-
-
-            $clear_flag = 0;
-
-            if ($_POST['answer'] = 2) {
-                if ($_POST['first_answer'] == 2 && $_POST['second_answer'] == 2) {
-                    $clear_flag = 1;
-                    //return sitaine
-                }
-                $next_answer_date=date('Y/m/d H:i:s',strtotime('+10 days'));
-
-                //$next_answer_date = $now->modify('+10 days');
-            } elseif ($_POST['answer'] = 1) {
-                //$next_answer_date = $now->modify('+2 days');
-                $next_answer_date=date('Y/m/d H:i:s',strtotime('+2 days'));
-            } elseif ($_POST['answer'] = 0) {
-                //$next_answer_date = $now->modify('+12 hours');
-                $next_answer_date=date('Y/m/d H:i:s',strtotime('+12 hours'));
-            }
-echo $next_answer_date;
-            $second_answer = $_POST['first_answer'];
-            $first_answer = $_POST['answer'];
-
-            include('./login_safe.php');
-
-            $result = mysqli_query($link, "update words2
-     set
-     last_answer_date='" . $now . "',
-     next_answer_date ='" . $next_answer_date . "',
-     first_answer= '" . $first_answer . "',
-     second_answer= '" . $second_answer . "',
-     clear_flag= '" . $clear_flag . "'
-     where word_id='" . $_POST['word_id'] . "'");
-
-*/
             $result = answer_card(
                 $_POST['word_id'],
                 $_POST['answer'],
