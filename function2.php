@@ -172,7 +172,6 @@ function rewrite_book()
     $settings_bookname = mysqli_query($link, "SELECT * FROM book_name");
 
     return $settings_bookname;
-
 }
 
 function pre_delete_book()
@@ -204,7 +203,7 @@ function answer_card($word_id, $kekka, $first_answer, $second_answer)
 
     $clear_flag = 0;
 
-    if ($kekka ==2) {
+    if ($kekka == 2) {
         if ($first_answer == 2 && $second_answer == 2) {
             $clear_flag = 1;
             //return sitaine
@@ -216,12 +215,14 @@ function answer_card($word_id, $kekka, $first_answer, $second_answer)
         $next_answer_date = date('Y/m/d H:i:s', strtotime('+12 hours'));
     }
 
-  
+
     $second_answer = $first_answer;
     $first_answer = $kekka;
 
 
-    $result = mysqli_query($link, "update words2
+    $result = mysqli_query(
+        $link,
+        "update words2
      set
      last_answer_date='" . $now . "',
      next_answer_date ='" . $next_answer_date . "',
@@ -243,6 +244,53 @@ function open_card($bookid)
     $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' order by next_answer_date limit 1");
 
     //抽出の順番をここで決める必要がある。
+
+    $now = new DateTime();
+    $now = $now->format('Y/m/d H:i:s');
+
+
+    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date < '" . $now . "' limit 1");
+
+    $there_word = 0;
+
+    while ($buf = mysqli_fetch_assoc($open_card)) {
+        $there_word = 1;
+    }
+
+    if ($there_word == 0) {
+
+        //何もなければ、answerの日付がないもの
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer==null limit 1");
+        while ($buf = mysqli_fetch_assoc($open_card)) {
+            $there_word = 1;
+        }
+
+        if($there_word==0){
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' order by last_answer_date limit 1");
+
+        }else{
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=null limit 1");
+        }
+
+    } else {
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date < '" . $now . "' limit 1");
+    }
+
+    return $open_card;
+
+    /*   
+    $now = new DateTime();
+    $next_answer_date = new DateTime();
+
+    $now = $now->format('Y/m/d H:i:s');
+
+    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' order by next_answer_date limit 1");
+    
+    ・いま＞next_answer_dateのものがあれば、それを出す。
+    ・何もなければ、answerの日付がないもの
+    ・それでもなければ、first_answer→second_answer
+
+    */
 
     return $open_card;
 }
