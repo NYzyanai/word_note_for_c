@@ -21,7 +21,8 @@ function revealbook()
 {
     include('./login_safe.php');
 
-    $result_book = mysqli_query($link, "SELECT * FROM book_name");
+    $result_book = mysqli_query($link, "SELECT * FROM book_name2");
+
     if (!$result_book) {
         die("クエリーが失敗");
         //mysqli_error(mysqli $result_book);
@@ -42,7 +43,7 @@ function openbook($book_id)
     $result_open_book =
         mysqli_query(
             $link,
-            "SELECT * FROM book_name where book_id=" . $book_id . ""
+            "SELECT * FROM book_name2 where book_id=" . $book_id . ""
         );
 
     return  $result_open_book;
@@ -92,7 +93,7 @@ function create_book($book_name, $book_memo)
         $create_book_result =
             mysqli_query(
                 $link,
-                "INSERT INTO book_name 
+                "INSERT INTO book_name2 
             (book_id,book_name,book_memo,last_access_date,created_date) 
             VALUES 
             (NULL, '" . $book_name . "', '" . $book_memo . "',default,NULL)"
@@ -101,7 +102,7 @@ function create_book($book_name, $book_memo)
         if (!$create_book_result) {
             die("クエリーが失敗");
         } else {
-            $result_book_no = mysqli_query($link, "select book_id from book_name where book_name='" . $book_name . "'");
+            $result_book_no = mysqli_query($link, "select book_id from book_name2 where book_name='" . $book_name . "'");
             $row_book = mysqli_fetch_assoc($result_book_no);
             $return_result_book = $row_book['book_id'];
             return $return_result_book;
@@ -114,7 +115,7 @@ function book_id($book_name)
     include('./login_safe.php');
     $books_name = mysqli_query(
         $link,
-        "select * from book_name where book_name='" . $book_name . "'"
+        "select * from book_name2 where book_name='" . $book_name . "'"
     );
     while ($books_name_open = mysqli_fetch_assoc($books_name)) {
         $result_bookid = $books_name_open['book_id'];
@@ -169,7 +170,7 @@ function delete_card($word_id)
 function rewrite_book()
 {
     include('./login_safe.php');
-    $settings_bookname = mysqli_query($link, "SELECT * FROM book_name");
+    $settings_bookname = mysqli_query($link, "SELECT * FROM book_name2");
 
     return $settings_bookname;
 }
@@ -185,7 +186,7 @@ function delete_book($book_name_value)
 
     mysqli_query($link, " update words2 set book_id=999 where book_id='" . $book_name_value . "'");
 
-    $delete_book_result = mysqli_query($link, "delete from book_name where book_id='" . $book_name_value . "' limit 1");
+    $delete_book_result = mysqli_query($link, "delete from book_name2 where book_id='" . $book_name_value . "' limit 1");
 
     return $delete_book_result;
 }
@@ -241,7 +242,7 @@ function open_card($bookid)
 {
     include('./login_safe.php');
 
-    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' order by next_answer_date limit 1");
+    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "'  order by next_answer_date desc limit 1");
 
     //抽出の順番をここで決める必要がある。
 
@@ -249,32 +250,43 @@ function open_card($bookid)
     $now = $now->format('Y/m/d H:i:s');
 
 
-    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date < '" . $now . "' limit 1");
+    //$open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and  order bynext_answer_date desc limit 1");
 
     $there_word = 0;
 
-    while ($buf = mysqli_fetch_assoc($open_card)) {
+    /*while ($buf = mysqli_fetch_assoc($open_card)) {
         $there_word = 1;
-    }
+    }*/
 
-    if ($there_word == 0) {
+    /*if ($there_word == 0) {
 
         //何もなければ、answerの日付がないもの
-        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer==null limit 1");
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date < '" . $now . "' limit 1");
         while ($buf = mysqli_fetch_assoc($open_card)) {
             $there_word = 1;
         }
 
-        if($there_word==0){
-            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' order by last_answer_date limit 1");
+        if ($there_word == 0) {
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=0 order by last_answer_date desc　limit 1");
 
-        }else{
-            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=null limit 1");
+            while ($buf = mysqli_fetch_assoc($open_card)) {
+                $there_word = 1;
+            }
+
+            if ($there_word == 0){
+                $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and order by last_answer_date desc　limit 1");
+
+            }else{
+                $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=0 order by last_answer_date desc　limit 1");
+            }
+        } else {
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date < '" . $now . "' limit 1");
         }
-
     } else {
-        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date < '" . $now . "' limit 1");
-    }
+
+
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date =null limit 1");
+    }*/
 
     return $open_card;
 
@@ -292,5 +304,4 @@ function open_card($bookid)
 
     */
 
-    return $open_card;
 }

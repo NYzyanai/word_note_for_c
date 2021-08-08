@@ -101,6 +101,12 @@
         } ?>
 
         <?php if ($there_word != 0) : ?>
+      <?php 
+            if ($first_answer<>""){
+
+
+                echo "最後に解いた日：".$last_answer_date;
+             } ?>
             <h2 id='question' onclick='clickBtn2()'>
                 <?php echo $question ?>
             </h2>

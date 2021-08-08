@@ -36,7 +36,7 @@
         <?php
 
         include('./login_safe.php');
-        include('./function.php');
+        include('./function2.php');
         mysqli_set_charset($link, "utf8");
 
         //登録
@@ -93,7 +93,7 @@
                     <br>
 
                     <div>
-                        <form method=post action='https://word-note.main.jp/book.php'>
+                        <form method=post action='https://word-note.main.jp/book2.php'>
                             <input type=hidden name='openbook' value=<?php echo $book_id ?>>
                             <button class='clear_button createbookbutton' style='background-color:#e3f6f5;'>
                                 スタート
