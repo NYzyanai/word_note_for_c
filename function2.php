@@ -194,8 +194,57 @@ function delete_book($book_name_value)
     return $delete_book_result;
 }
 
-function answer_card($word_id, $nowweight, $addweight)
+function answer_card($word_id, $nowweight, $addweight, $kekka, $first_answer, $second_answer)
 {
+
+    //ここで回答した情報を書き換える
+
+    $next_answer = new DateTime('now');
+
+    if ($kekka = "maru") {
+        if ($first_answer == "maru" && $second_answer == "maru") {
+            $clear_flag = 1;
+            //return sitaine
+        }
+        $next_answer->modify('+10 days');
+    } elseif ($kekka = "sankaku") {
+        $next_answer->modify('+2 days');
+    } elseif ($kekka = "batu") {
+        $next_answer->modify('+12 hours');
+    }
+
+    $second_answer = $first_answer;
+    $first_answer = $kekka;
+
+    /*
+    今回のanswer,second_anser,first_answerがすべて丸の時
+    clear_flagを立ててallモードでしか出ないようにする
+
+
+    first_answerはsecond_answerへ
+    second_answerは消える
+
+    //もし、○なら10日間出題されない。○が3回連続になったらALLモードでしか出ない。
+    //もし△なら2日間でない。ただし△が2回連続になったら翌日出る。
+    //×翌日出る
+    //つまり、2回前の解答内容を保持しておく必要がある。
+
+
+    これロジックなんか変な気がする
+    最終といた日とlast_answerの結果で毎回抽出するの大変じゃないかな
+次のanswerdateを毎回入れたほうがいい気がしてきた
+もしsannkakuなら、
+answerdateを今日から＋２
+もし罰なら
+answerdateを明日にする　とか
+もし丸なら
+answerdateを10日後にする　みたいな
+そしたらlastanswerdateを入れる意味って何だろう？と思ったけど、
+もし「answerdate」を過ぎているものが複数件あった場合には
+orderby lastanswerdateにしたほうがよさそう
+じゃないかな
+
+    */
 
     include('./login_safe.php');
     if (!empty($word_id)) {
@@ -217,9 +266,4 @@ function open_card($bookid)
     $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' order by word_weight limit 1");
 
     return $open_card;
-
-        //もし、○なら10日間出題されない。○が3回連続になったらALLモードでしか出ない。
-        //もし△なら2日間でない。ただし△が2回連続になったら翌日出る。
-        //×翌日出る
-        //つまり、2回前の解答内容を保持しておく必要がある。
 }
