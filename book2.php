@@ -80,13 +80,16 @@
 
 
         mysqli_set_charset($link, "");
-        $open_card = open_card($_POST['openbook']);
-
+        $open_card = open_card($_POST['openbook'],$word_id_last_open);
+        echo  $word_id_last_open;
 
         while ($row_book = mysqli_fetch_assoc($open_card)) {
 
             $book_id = $row_book["book_id"];
-            $word_id = $row_book["word_id"];
+            global $word_id_last_open;
+             $word_id = $row_book["word_id"];
+             $word_id_last_open = $row_book["word_id"];
+           
             $question = $row_book['question'];
             $answer = $row_book['answer'];
             $word_memo = $row_book['word_memo'];

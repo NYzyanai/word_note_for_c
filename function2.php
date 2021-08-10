@@ -241,8 +241,8 @@ function answer_card($word_id, $kekka, $first_answer, $second_answer)
 function open_card($bookid)
 {
     include('./login_safe.php');
-
-
+    //include('./book2.php');
+    //echo $word_id_last_open;
 
     //抽出の順番をここで決める必要がある。
 
@@ -260,33 +260,44 @@ function open_card($bookid)
     ・それでもなければ、first_answer→second_answer*/
 
     //ネクストアンサーの日付が今日よりも前のもの
-    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "'  next_answer_date < '".$now."' order by last_answer_date limit 1");
+    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "'  and next_answer_date < '" . $now . "' and  word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");
 
     while ($buf = mysqli_fetch_assoc($open_card)) {
         $there_word = 1;
     }
 
-    if($there_word==0){
-    //まだ解いていないもの
-    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "'  and next_answer_date=null order by last_answer_date limit 1");
+    if ($there_word == 0) {
+        //まだ解いていないもの
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "'  and next_answer_date=null and not in word_id !='" . $word_id_last_open . "'  order by last_answer_date limit 1");
 
-    while ($buf = mysqli_fetch_assoc($open_card)) {
-        $there_word = 1;
+        while ($buf = mysqli_fetch_assoc($open_card)) {
+            $there_word = 1;
+        }
+        if ($there_word == 0) {
+            //それでもなければ、前回の回答がばつだったもの
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=0 and word_id !='" . $word_id_last_open . "' order by next_answer_date limit 1");
+            //ここでなにも抽出されない可能性もある。
+            while ($buf = mysqli_fetch_assoc($open_card)) {
+                $there_word = 1;
+            }
+
+            if ($there_word == 0) {
+                
+                $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");
+                
+                //echo  "SELECT * FROM words2 where book_id='" . $bookid . "' and word_id !=" . $word_id_last_open . " order by last_answer_date limit 1";
+            } else {
+                $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=0 and word_id !='" . $word_id_last_open . "' order by next_answer_date limit 1");
+                
+            }
+        } else {
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "'  and next_answer_date=null and word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");
+        }
+    } else {
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date < '" . $now . "' and word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");
     }
-if($there_word==0){
-  //それでもなければ、前回の回答がばつだったもの
-  $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=0 order by next_answer_date limit 1");
- //ここでなにも抽出されない可能性もある。
-  
-}else{
-    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "'  and next_answer_date=null order by last_answer_date limit 1");
-}
 
-    }else{
-        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "'  next_answer_date < '".$now."' order by last_answer_date limit 1");
-    }
 
-  
     //可能ならば、同じ問題は出したくない。
 
     /*while ($buf = mysqli_fetch_assoc($open_card)) {
@@ -338,5 +349,4 @@ if($there_word==0){
     ・それでもなければ、first_answer→second_answer
 
     */
-
 }
