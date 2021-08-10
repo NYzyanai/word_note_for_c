@@ -1,5 +1,7 @@
 <?php
 
+// 文字化け防止
+mysqli_set_charset($link, "utf8");
 function updatebook($nowweight, $addweight, $word_id)
 {
     include('./login_safe.php');
@@ -84,7 +86,7 @@ function create_book($book_name, $book_memo)
     include('./login_safe.php');
 
     //全ての本を数える
-    $totalcount = mysqli_query($link, "select *  from book_name");
+    $totalcount = mysqli_query($link, "select *  from book_name2");
     $totalcount_num = mysqli_num_rows($totalcount);
 
 
@@ -113,10 +115,14 @@ function create_book($book_name, $book_memo)
 function book_id($book_name)
 {
     include('./login_safe.php');
+    
+    mysqli_set_charset($link, "utf8");
+    
     $books_name = mysqli_query(
         $link,
         "select * from book_name2 where book_name='" . $book_name . "'"
     );
+
     while ($books_name_open = mysqli_fetch_assoc($books_name)) {
         $result_bookid = $books_name_open['book_id'];
     }
@@ -282,13 +288,12 @@ function open_card($bookid)
             }
 
             if ($there_word == 0) {
-                
+
                 $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");
-                
+
                 //echo  "SELECT * FROM words2 where book_id='" . $bookid . "' and word_id !=" . $word_id_last_open . " order by last_answer_date limit 1";
             } else {
                 $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=0 and word_id !='" . $word_id_last_open . "' order by next_answer_date limit 1");
-                
             }
         } else {
             $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "'  and next_answer_date=null and word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");

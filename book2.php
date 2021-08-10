@@ -80,8 +80,10 @@
 
 
         mysqli_set_charset($link, "");
-        $open_card = open_card($_POST['openbook'],$word_id_last_open);
-        echo  $word_id_last_open;
+    
+        //echo $_POST['openbook'];
+        $open_card = open_card($_POST['openbook']);
+        //echo  $word_id_last_open;
 
         while ($row_book = mysqli_fetch_assoc($open_card)) {
 
@@ -278,15 +280,13 @@
                     <div class='settings_card'>
                         【質問】
                         <br>
-                        <textarea name='question' type='text' rows='2' cols='40'><?php echo $question ?></textarea>
+                        <textarea name='question' type='text' rows='4' cols='40'><?php echo $question ?></textarea>
                     </div>
                     <br>
                     <div class='settings_card'>
                         【解答】
                         <br>
-                        <textarea name='answer' type='text' rows='2' cols='40'>
-                            <?php echo $answer ?>
-                        </textarea>
+                        <textarea name='answer' type='text' rows='4' cols='40'><?php echo $answer ?></textarea>
                     </div>
 
                     <!--$settings_bookname = mysqli_query($link, "SELECT * FROM book_name");-->
@@ -300,6 +300,7 @@
 
                             while ($set_bookname = mysqli_fetch_assoc($settings_bookname)) {
                                 $book_id_result = $set_bookname['book_id'];
+                                
                                 if ($book_id_result == $_POST['book_id']) {
                                     echo "<option selected>" . $set_bookname['book_name'] . "</option>";
                                 } else {

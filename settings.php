@@ -24,6 +24,10 @@
     <?php
 
 
+    // 文字化け防止
+    mysqli_set_charset($link, "utf8");
+
+
     //もし質問・解答が入っていて設定が「リライト」だった場合
     if (!empty($_POST['question']) && !empty($_POST['answer']) && 'rewrite' == $_POST['settings']) : ?>
 
@@ -32,9 +36,11 @@
 
         <?php
         include('./login_safe.php');
-        include('./function.php');
+        include('./function2.php');
 
-        $result_bookid = book_id($_POST['book']);
+        //echo "うわああ".$_POST['book'];
+        $book_name=$_POST['book'];
+        $result_bookid = book_id($book_name);
         $rewrite_bookname_result = rewrite_card($_POST['question'], $_POST['answer'], $result_bookid, $_POST['word_id']);
 
         if (!empty($rewrite_bookname_result)) : ?>
@@ -47,23 +53,27 @@
             <br>
             <br>に変更したよ！
 
-        <?php else : ?>
+
+        <?php
+  
+        else :
+        ?>
 
             うまく変更できませんでした…
 
         <?php endif; ?>
 
 
-        <form method=post action='https://word-note.main.jp/book.php'>
+        <form method=post action='https://word-note.main.jp/book2.php'>
             <button id='return' class='clear_button'>
-                <input type=hidden name='openbook' value='<?php $_POST[' book_id'] ?>'>
+                <input type=hidden name='openbook' value=<?php echo $result_bookid ?>>
                 <img src='./img/iconmonstr-undo-1-32.png'>
             </button>
         </form>
         <!--単語番号が指定されていて、設定が「削除」だった時 -->
     <?php elseif (!empty($_POST['word_id']) && 'delete' == $_POST['settings']) : ?>
 
-        <form method=post action='https://word-note.main.jp/book.php'>
+        <form method=post action='https://word-note.main.jp/book2.php'>
             <button class='clear_button'>
                 <input type=hidden name='openbook' value='<?php echo $_POST['book_id'] ?>'>
                 <img src='./img/iconmonstr-undo-1-32.png'>
@@ -115,7 +125,7 @@
             </form>
         <?php else : ?>
 
-            <form method=post action='https://word-note.main.jp/book.php'>
+            <form method=post action='https://word-note.main.jp/book2.php'>
                 <button id='return' class='clear_button'>
                     <img src='./img/iconmonstr-undo-1-32.png'>
                     <input type=hidden name='openbook' value='<?php echo  $_POST['book_id'] ?>'>
@@ -175,14 +185,14 @@
             </form>
         </div>
         <div>
-           
-                <button class='clear_button settings_card' style='margin-top:10px; margin-bottom:10px;'>
-                    <h1>
-                        ※試作中（動作しません）
-                        <br>
-                        CSVアップロード
-                    </h1>
-                </button>
+
+            <button class='clear_button settings_card' style='margin-top:10px; margin-bottom:10px;'>
+                <h1>
+                    ※試作中（動作しません）
+                    <br>
+                    CSVアップロード
+                </h1>
+            </button>
         </div>
 
     <?php elseif ($_POST['settings'] == 'book_change') :
@@ -389,7 +399,7 @@
             <?php if (!empty($result_bookid)) : ?>
                 <?php echo $result_bookid; ?>
                 不正な操作です
-                <form method=post action='https://word-note.main.jp/book.php'>
+                <form method=post action='https://word-note.main.jp/book2.php'>
                     <input type=hidden name='openbook' value='<?php $result_bookid ?>'>
                     <button id='return' class='clear_button'>
                         <img src='./img/iconmonstr-undo-1-32.png'>
