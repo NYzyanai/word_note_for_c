@@ -34,7 +34,7 @@
     mysqli_set_charset($link, "utf8");
     include('./login_safe.php');
     include('./function2.php');
-   revealbook();
+    $result_book=revealbook();
 
     while ($row_book = mysqli_fetch_assoc($result_book)) {
         //配列にしちゃう？

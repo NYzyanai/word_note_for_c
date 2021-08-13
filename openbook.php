@@ -73,11 +73,11 @@
                         <p>
                             問題を登録する
                         </p>
-                        <input type=text name='question' required>
+                        <textarea type=text name='question' required rows='4' cols='40'></textarea>
                         <p>
                             回答を登録する
                         </p>
-                        <input type=text name='answer' required>
+                        <textarea  type=text name='answer' required rows='4' cols='40'></textarea>
                         <br>
                         <button>
                             登録！
