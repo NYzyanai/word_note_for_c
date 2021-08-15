@@ -73,11 +73,11 @@
                         <p>
                             問題を登録する
                         </p>
-                        <textarea type=text name='question' required rows='4' cols='40'></textarea>
+                        <input type=text name='question' required>
                         <p>
                             回答を登録する
                         </p>
-                        <textarea  type=text name='answer' required rows='4' cols='40'></textarea>
+                        <input type=text name='answer' required>
                         <br>
                         <button>
                             登録！
@@ -123,12 +123,35 @@
             <?php endif; ?>
         <?php else : ?>
 
-            <br>
-            単語帳を開けませんでした…
-            <br>
+            <?php
+            //ifおーるもーどが　来たらこちらで
+
+            if (!empty($_POST['all_mode'])) :
+
+            ?>
+
+                <h1>すべての単語帳をスタートします！</h1>
+                <div>
+                    <form method=post action='./book2.php'>
+                        <input type=hidden name='all_mode' value='all_mode'>
+                        <button class='clear_button createbookbutton' style='background-color:#e3f6f5;'>
+                            ※設定中※スタート
+                        </button>
+                    </form>
+                </div>
+
+            <?php
+
+            else :
+            endif;
+            ?>
+
+
 
         <?php endif; ?>
-
+        <br>
+        単語帳を開けませんでした…
+        <br>
 
     </body>
 

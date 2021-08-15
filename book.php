@@ -260,6 +260,9 @@
         </form>
         </div>
 
+    <?php elseif (!empty($_POST['all_mode'])) : ?>
+        全部モード
+
     <?php endif;
 
     ?>

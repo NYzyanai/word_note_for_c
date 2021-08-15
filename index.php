@@ -52,6 +52,12 @@
     <?php
     }
     ?>
+        <form action=''>
+        <button class='createbookbutton'>
+            ※作成中※ALLモード
+        </button>
+    </form>
+
     <form action='./create_book.php'>
         <button class='createbookbutton'>
             あたらしい単語帳を作る

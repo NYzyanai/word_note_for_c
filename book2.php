@@ -44,7 +44,7 @@
 
     <?php
 
-/*echo "IDは【「".$_POST['word_id'],
+    /*echo "IDは【「".$_POST['word_id'],
 "アンサーは【「".$_POST['answer'],
 "ファーストアンサーは【「".$_POST['first_answer'],
 "セカンドアンサーは【「".$_POST['second_answer'];*/
@@ -80,23 +80,19 @@
 
 
         mysqli_set_charset($link, "");
-    
-        //echo $_POST['openbook'];
         $open_card = open_card($_POST['openbook']);
-        //echo  $word_id_last_open;
+
 
         while ($row_book = mysqli_fetch_assoc($open_card)) {
 
             $book_id = $row_book["book_id"];
-            global $word_id_last_open;
-             $word_id = $row_book["word_id"];
-             $word_id_last_open = $row_book["word_id"];
-           
+            $word_id = $row_book["word_id"];
             $question = $row_book['question'];
             $answer = $row_book['answer'];
             $word_memo = $row_book['word_memo'];
             $last_answer_date = $row_book['last_answer_date'];
 
+            $next_answer_date = $row_book['next_answer_date'];
 
             $first_answer = $row_book["first_answer"];
             $second_answer = $row_book["second_answer"];
@@ -106,12 +102,17 @@
         } ?>
 
         <?php if ($there_word != 0) : ?>
-      <?php 
-            if ($first_answer<>""){
-
-
-                echo "最後に解いた日：".$last_answer_date;
-             } ?>
+            <?php
+            if ($next_answer_date <> "") {
+                if ($first_answer == 0) {
+                    $zenkai = '×';
+                } elseif ($first_answer == 1) {
+                    $zenkai = '△';
+                } elseif ($first_answer == 2) {
+                    $zenkai = '○';
+                }
+                echo "前回の回答：" . $zenkai . "<br>最後に解いた日：" . $last_answer_date;
+            } ?>
             <h2 id='question' onclick='clickBtn2()'>
                 <?php echo $question ?>
             </h2>
@@ -280,13 +281,15 @@
                     <div class='settings_card'>
                         【質問】
                         <br>
-                        <textarea name='question' type='text' rows='4' cols='40'><?php echo $question ?></textarea>
+                        <textarea name='question' type='text' rows='2' cols='40'><?php echo $question ?></textarea>
                     </div>
                     <br>
                     <div class='settings_card'>
                         【解答】
                         <br>
-                        <textarea name='answer' type='text' rows='4' cols='40'><?php echo $answer ?></textarea>
+                        <textarea name='answer' type='text' rows='2' cols='40'>
+                            <?php echo $answer ?>
+                        </textarea>
                     </div>
 
                     <!--$settings_bookname = mysqli_query($link, "SELECT * FROM book_name");-->
@@ -300,7 +303,6 @@
 
                             while ($set_bookname = mysqli_fetch_assoc($settings_bookname)) {
                                 $book_id_result = $set_bookname['book_id'];
-                                
                                 if ($book_id_result == $_POST['book_id']) {
                                     echo "<option selected>" . $set_bookname['book_name'] . "</option>";
                                 } else {
@@ -342,9 +344,175 @@
         </form>
         </div>
 
+
+
     <?php endif;
 
     ?>
+<?php elseif (!empty($_POST['all_mode'])) : ?>
+    全部モード
+    <?php
+        if (!empty($_POST['word_id'])) {
+
+            $result = answer_card(
+                $_POST['word_id'],
+                $_POST['answer'],
+                $_POST['first_answer'],
+                $_POST['second_answer']
+            );
+
+
+            if (!empty($result)) {
+                //echo "書き換え完了";
+            } else {
+                //echo "書き換えがうまくいっていない";
+            }
+        }
+        $there_word = 0;
+
+
+        mysqli_set_charset($link, "");
+        $open_card = open_all_card($_POST['openbook']);
+
+
+        while ($row_book = mysqli_fetch_assoc($open_card)) {
+
+            $word_id = $row_book["word_id"];
+            $question = $row_book['question'];
+            $answer = $row_book['answer'];
+            $word_memo = $row_book['word_memo'];
+            $last_answer_date = $row_book['last_answer_date'];
+
+            $next_answer_date = $row_book['next_answer_date'];
+
+            $first_answer = $row_book["first_answer"];
+            $second_answer = $row_book["second_answer"];
+            $clear_flag = $row_book["clear_flag"];
+
+            $there_word = 1;
+        } ?>
+
+    <?php if ($there_word != 0) : ?>
+        <?php
+            if ($next_answer_date <> "") {
+                if ($first_answer == 0) {
+                    $zenkai = '×';
+                } elseif ($first_answer == 1) {
+                    $zenkai = '△';
+                } elseif ($first_answer == 2) {
+                    $zenkai = '○';
+                }
+                echo "前回の回答：" . $zenkai . "<br>最後に解いた日：" . $last_answer_date;
+            } ?>
+        <h2 id='question' onclick='clickBtn2()'>
+            <?php echo $question ?>
+        </h2>
+        <br>
+
+        <h2 id='answer'>
+            <?php echo $answer ?>
+        </h2>
+
+        <div id='putin_button'>
+
+            <div id='batu'>
+
+                <form method=post action='https://word-note.main.jp/book2.php'>
+
+                    <input type=hidden name='word_id' value=<?php echo  $word_id ?>>
+
+                    <!--<input type=hidden name='addweight' value=0.2>-->
+
+                    <input type=hidden name='last_answer_date' value=<?php echo  $last_answer_date ?>>
+
+                    <input type=hidden name='weight' value=<?php echo  $weight ?>>
+
+                    <input type=hidden name='first_answer' value=<?php echo  $first_answer ?>>
+                    <input type=hidden name='second_answer' value=<?php echo  $second_answer ?>>
+
+                    <input type=hidden name='answer' value="0">
+                    <input type=hidden name='clear_flag' value=<?php echo  $clear_flag ?>>
+
+
+
+                    <button class='clear_button'>
+                        <img src='./img/iconmonstr-smiley-3-240.png' class='iconcolor'>
+                    </button>
+                </form>
+            </div>
+
+            <div id='sankaku'>
+
+                <form method=post action='https://word-note.main.jp/book2.php'>
+
+
+                    <input type=hidden name='word_id' value=<?php echo  $word_id ?>>
+
+                    <!--<input type=hidden name='addweight' value=0.2>-->
+                    <input type=hidden name='answer' value="1">
+                    <input type=hidden name='last_answer_date' value=<?php echo  $last_answer_date ?>>
+
+                    <input type=hidden name='weight' value=<?php echo  $weight ?>>
+
+                    <input type=hidden name='first_answer' value=<?php echo  $first_answer ?>>
+                    <input type=hidden name='second_answer' value=<?php echo  $second_answer ?>>
+
+                    <input type=hidden name='clear_flag' value=<?php echo  $clear_flag ?>>
+
+                    <button class='clear_button'>
+                        <img src='./img/iconmonstr-paperclip-2-240.png' class='iconcolor'>
+                    </button>
+                </form>
+            </div>
+
+            <div id='maru'>
+                <form method=post action='https://word-note.main.jp/book2.php' name='form1'>
+
+                    <input type=hidden name='word_id' value=<?php echo  $word_id ?>>
+
+                    <!--<input type=hidden name='addweight' value=0.2>-->
+                    <input type=hidden name='answer' value=2>
+
+                    <input type=hidden name='last_answer_date' value=<?php echo  $last_answer_date ?>>
+
+                    <input type=hidden name='weight' value=<?php echo  $weight ?>>
+
+                    <input type=hidden name='first_answer' value=<?php echo  $first_answer ?>>
+                    <input type=hidden name='second_answer' value=<?php echo  $second_answer ?>>
+
+                    <input type=hidden name='clear_flag' value=<?php echo  $clear_flag ?>>
+
+                    <button class='clear_button' onclick='yeahBtn()'>
+                        <img src='./img/iconmonstr-smiley-1-240.png' class='iconcolor'>
+                    </button>
+
+                </form>
+            </div>
+
+            <div class='clear'>
+            </div>
+
+            <br>
+            <br>
+        </div>
+
+        <div class='return'>
+            <a href='https://word-note.main.jp/index.php'>
+                もどる
+            </a>
+        </div>
+    <?php elseif ($there_word == 0) : ?>
+
+        <div style='float:left;'>
+            <form method=post action='https://word-note.main.jp/index.php'>
+                <button class='clear_button'>
+                    <img src='./img/iconmonstr-undo-1-32.png'>
+                </button>
+            </form>
+        </div>
+
+    <?php endif; ?>
+
 <?php else : ?>
 
 

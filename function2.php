@@ -115,9 +115,9 @@ function create_book($book_name, $book_memo)
 function book_id($book_name)
 {
     include('./login_safe.php');
-    
+
     mysqli_set_charset($link, "utf8");
-    
+
     $books_name = mysqli_query(
         $link,
         "select * from book_name2 where book_name='" . $book_name . "'"
@@ -340,6 +340,109 @@ function open_card($bookid)
     }*/
 
     return $open_card;
+
+    /*   
+    $now = new DateTime();
+    $next_answer_date = new DateTime();
+
+    $now = $now->format('Y/m/d H:i:s');
+
+    $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' order by next_answer_date limit 1");
+    
+    ・いま＞next_answer_dateのものがあれば、それを出す。
+    ・何もなければ、answerの日付がないもの
+    ・それでもなければ、first_answer→second_answer
+
+    */
+}
+
+function open_all_card()
+{
+
+    include('./login_safe.php');
+
+    $now = new DateTime();
+    $now = $now->format('Y/m/d H:i:s');
+
+
+    $there_word = 0;
+
+
+    //ネクストアンサーの日付が今日よりも前のもの
+    $open_card = mysqli_query($link, "SELECT * FROM words2 where next_answer_date < '" . $now . "' and  word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");
+
+    while ($buf = mysqli_fetch_assoc($open_card)) {
+        $there_word = 1;
+    }
+
+    if ($there_word == 0) {
+        //まだ解いていないもの
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where next_answer_date=null and not in word_id !='" . $word_id_last_open . "'  order by last_answer_date limit 1");
+
+        while ($buf = mysqli_fetch_assoc($open_card)) {
+            $there_word = 1;
+        }
+        if ($there_word == 0) {
+            //それでもなければ、前回の回答がばつだったもの
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where  first_answer=0 and word_id !='" . $word_id_last_open . "' order by next_answer_date limit 1");
+            //ここでなにも抽出されない可能性もある。
+            while ($buf = mysqli_fetch_assoc($open_card)) {
+                $there_word = 1;
+            }
+
+            if ($there_word == 0) {
+
+                $open_card = mysqli_query($link, "SELECT * FROM words2 where word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");
+
+                //echo  "SELECT * FROM words2 where book_id='" . $bookid . "' and word_id !=" . $word_id_last_open . " order by last_answer_date limit 1";
+            } else {
+                $open_card = mysqli_query($link, "SELECT * FROM words2 where first_answer=0 and word_id !='" . $word_id_last_open . "' order by next_answer_date limit 1");
+            }
+        } else {
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where next_answer_date=null and word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");
+        }
+    } else {
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where next_answer_date < '" . $now . "' and word_id !='" . $word_id_last_open . "' order by last_answer_date limit 1");
+    }
+
+    return $open_card;
+    //可能ならば、同じ問題は出したくない。
+
+    /*while ($buf = mysqli_fetch_assoc($open_card)) {
+        $there_word = 1;
+    }*/
+
+    /*if ($there_word == 0) {
+
+        //何もなければ、answerの日付がないもの
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date < '" . $now . "' limit 1");
+        while ($buf = mysqli_fetch_assoc($open_card)) {
+            $there_word = 1;
+        }
+
+        if ($there_word == 0) {
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=0 order by last_answer_date desc　limit 1");
+
+            while ($buf = mysqli_fetch_assoc($open_card)) {
+                $there_word = 1;
+            }
+
+            if ($there_word == 0){
+                $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and order by last_answer_date desc　limit 1");
+
+            }else{
+                $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and first_answer=0 order by last_answer_date desc　limit 1");
+            }
+        } else {
+            $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date < '" . $now . "' limit 1");
+        }
+    } else {
+
+
+        $open_card = mysqli_query($link, "SELECT * FROM words2 where book_id='" . $bookid . "' and next_answer_date =null limit 1");
+    }*/
+
+
 
     /*   
     $now = new DateTime();
