@@ -184,10 +184,11 @@ a {
 
 .all_wrap_card {
     padding: 2px;
-    margin: 10%;
-    background-color: #aa94bf;
+    margin: 5px;
+
     justify-content: center;
     justify-content: space-between;
+    background-color: #bae8e8;
     border-radius: 10px;
     display: flex;
   
@@ -196,8 +197,9 @@ a {
   .all_button {
     width: 10%;
     float:left;
+    border-radius: 50%;
     text-align: center;
-    background-color: aliceblue;
+    background-color: #e3f6f5;
     justify-content: center;
     margin: 10px; 
     vertical-align: middle;
@@ -211,10 +213,11 @@ a {
   }
   
   .all_card {
-    width: 80%;
+    width: 83%;
     margin: 10px;
     float: left;
     text-align: center;
-    background-color: aliceblue;
+    background-color:#e3f6f5;
   }
+
   

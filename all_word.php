@@ -65,6 +65,47 @@
 
 
 
+    <div class='all_wrap_card'>
+        <div class='all_button'>
+            <p>ボタン</p>
+        </div>
+        <div class='all_card'>
+            <h3>Question</h3>
+            <h4>Answer</h4>
+        </div>
+        <div class='clear'></div>
+    </div>
+
+
+
+    <div class='all_wrap_card'>
+        <div class='all_button'>
+            <p>ボタン</p>
+        </div>
+        <div class='all_card'>
+            <h3>Question</h3>
+            <h4>Answer</h4>
+        </div>
+        <div class='clear'></div>
+    </div>
+
+
+    
+
+
+    <div class='all_wrap_card'>
+        <div class='all_button'>
+            <p>ボタン</p>
+        </div>
+        <div class='all_card'>
+            <h3>Question</h3>
+            <h4>Answer</h4>
+        </div>
+        <div class='clear'></div>
+    </div>
+
+
+
 </body>
 
 </html>
