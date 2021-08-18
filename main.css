@@ -1,196 +1,220 @@
-body{
-    background-color:#fffffe;
-    margin: 0%;
+body {
+  background-color: #fffffe;
+  margin: 0%;
 }
 
-
-.header{
-    display: flex;
-    background-color:#ffd803;
-    width:auto;
-    justify-content: space-between;
-    align-items: center;
+.header {
+  display: flex;
+  background-color: #ffd803;
+  width: auto;
+  justify-content: space-between;
+  align-items: center;
 }
-
 
 /* .がclass,#がid */
 
-.main_title{
-    color:#272343;
-    float:left;
-    margin:0px,0px,0px,0px;
+.main_title {
+  color: #272343;
+  float: left;
+  margin: 0px, 0px, 0px, 0px;
 }
 
-#answer{
-    text-align: center;
-    color:#272343;
-    background-color:#bae8e8;
-    margin-left:15%;
-    margin-right: 15%;
-    padding-top:30px;
-    padding-bottom: 30px;
-    border-radius:10px ;
-    /*border-color: #272343;
+#answer {
+  text-align: center;
+  color: #272343;
+  background-color: #bae8e8;
+  margin-left: 15%;
+  margin-right: 15%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  /*border-color: #272343;
     border:solid;*/
 }
 
-#question{
-    text-align: center;
-    color:#272343;
-    background-color:#e3f6f5;
-    margin-left:15%;
-    margin-right: 15%;
-    padding-top:30px;
-    padding-bottom: 30px;
-    border-radius:10px ;
-    /*border-color:#272343;
+#question {
+  text-align: center;
+  color: #272343;
+  background-color: #e3f6f5;
+  margin-left: 15%;
+  margin-right: 15%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  /*border-color:#272343;
     border:solid;*/
 }
 
-.bookindex{
-    text-align: center;
-    color:#272343;
-    background-color:#bae8e8;
-    margin-left:10%;
-    margin-right: 10%;
-    margin-bottom:7px;
-    margin-top:7px;
-    padding-top:30px;
-    padding-bottom: 30px;
-    border-radius:10px ;
-    outline: none;
-    border:solid;
-    border-width:thin;
-    width:80vw;
-    font-size: 150%;
+.bookindex {
+  text-align: center;
+  color: #272343;
+  background-color: #bae8e8;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 7px;
+  margin-top: 7px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  outline: none;
+  border: solid;
+  border-width: thin;
+  width: 80vw;
+  font-size: 150%;
 }
 
-.createbookbutton{
-    text-align: center;
-    color:#272343;
-    background-color:#e3f6f5;
-    margin-left:10%;
-    margin-right: 10%;
-    margin-bottom:7px;
-    margin-top:7px;
-    padding-top:30px;
-    padding-bottom: 30px;
-    border-radius:10px ;
-    /*outline: none;*/
-    border:solid;
-    border-width:thin;
-    width:80vw;
-    font-size: 150%;
-    border-color:#272343;
+.createbookbutton {
+  text-align: center;
+  color: #272343;
+  background-color: #e3f6f5;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 7px;
+  margin-top: 7px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  /*outline: none;*/
+  border: solid;
+  border-width: thin;
+  width: 80vw;
+  font-size: 150%;
+  border-color: #272343;
 }
 
-a { text-decoration:none; }
-
-.iconcolor{
-    width:17vw;
-
+a {
+  text-decoration: none;
 }
 
-.clear_button{
-    outline: none;
-    border: none ;
-    background: transparent;
-    cursor: pointer;
-    align-items: center;
+.iconcolor {
+  width: 17vw;
 }
 
-.settings_button{
-    outline: none;
-    border: none ;
-    background: transparent;
-    cursor: pointer;
-
-}
-.hidden_button{
-    outline: none;
-    border: none ;
-    background: transparent;
-    cursor: pointer;
-    opacity:0%;
-    transition: 0.5s;
+.clear_button {
+  outline: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  align-items: center;
 }
 
-#putin_button{
-    display:flex;
+.settings_button {
+  outline: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+.hidden_button {
+  outline: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0%;
+  transition: 0.5s;
+}
+
+#putin_button {
+  display: flex;
+  justify-content: center;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+#batu {
+  float: left;
+  margin: 2%;
+}
+
+#sankaku {
+  float: left;
+  margin: 2%;
+}
+
+#maru {
+  float: left;
+  margin: 2%;
+}
+
+.sub_title {
+  color: white;
+  float: right;
+  text-align: right;
+  margin-right: 5px;
+}
+
+#return {
+  float: left;
+  padding-top: 5px;
+  text-align: center;
+}
+
+.settings_card {
+  background-color: #e3f6f5;
+  text-align: center;
+  width: 80vw;
+  margin-left: 10vw;
+  border-radius: 10px;
+}
+
+.login {
+  color: #303f9f;
+  text-align: center;
+}
+
+.clear {
+  clear: both;
+}
+
+#main_icon {
+  float: left;
+  color: #303f9f;
+  width: 20%;
+  height: 100%;
+  padding: top 10%;
+  padding: bottom 10%;
+  box-sizing: border-box;
+}
+
+#main_icon > p {
+  height: 70%;
+  padding: top 15%;
+  padding: left 15%;
+}
+
+
+.all_wrap_card {
+    padding: 2px;
+    margin: 10%;
+    background-color: #aa94bf;
     justify-content: center;
-    margin-left:2%;
-    margin-right:2%;
-}
-
-#batu{
+    justify-content: space-between;
+    border-radius: 10px;
+    display: flex;
+  
+  }
+  
+  .all_button {
+    width: 10%;
     float:left;
-    margin:2%;
-
-}
-
-#sankaku{
-    float:left;
-    margin:2%;
-
-}
-
-#maru{
-    float:left;
-    margin:2%;
-    
-}
-
-.sub_title{
-    color:white;
-    float:right;
-    text-align: right;
-    margin-right:5px;
-}
-
-
-#return{
-    float:left;
-    padding-top:5px;
     text-align: center;
-
-}
-
-.settings_card{
-    background-color:#e3f6f5 ;
-    text-align: center;
-    width:80vw;
-    margin-left:10vw;
-    border-radius:10px ;
-}
-
-.login{
-    color:#303F9F;
-    text-align: center;
-}
-
-.clear{
-    clear:both;
-}
-
-#main_icon{
-    float:left;
-    color:#303F9F;
-    width:20%;
-    height:100%;
-    padding: top 10%;
-    padding:bottom 10%;
-    box-sizing: border-box;
-}
-
-#main_icon > p{
-    height:70%;
-    padding:top 15%;
-    padding:left 15%;
-}
-
- /*text-align: center;
-    margin:0 auto;
-    width:100%;
+    background-color: aliceblue;
+    justify-content: center;
+    margin: 10px; 
+    vertical-align: middle;
+   
+  }
+  
+  .all_button >p{
+    padding: 30px 0;
     display: inline-block;
-    text-align: center;*/
-
+    vertical-align: middle;
+  }
+  
+  .all_card {
+    width: 80%;
+    margin: 10px;
+    float: left;
+    text-align: center;
+    background-color: aliceblue;
+  }
+  
